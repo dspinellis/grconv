@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: map.cpp,v 1.2 2000/03/12 10:44:25 dds Exp $
+ * $Id: map.cpp,v 1.3 2000/05/06 20:17:08 dds Exp $
  */
 
 #include <cstdlib>
@@ -42,7 +42,7 @@ cecompare(const struct s_charentry *a, const struct s_charentry *b)
 	return (a->unicode - b->unicode);
 }
 
-void usage();
+void encodings();
 
 /*
  * Create a character map between the character set specified in
@@ -59,11 +59,11 @@ map::map(char *in, char *out, char def)
 	default_char = def;
 	if ((inp = cs_find(in)) == NULL) {
 		cerr << "Unknown source character set " << in << "\n";
-		usage();
+		encodings();
 	}
 	if ((outp = cs_find(out)) == NULL) {
 		cerr << "Unknown target character set " << out << "\n";
-		usage();
+		encodings();
 	}
 	if (inp == outp) {
 		identity = true;
