@@ -1,0 +1,133 @@
+/* 
+ * (C) Copyright 2000 Diomidis Spinellis.
+ * 
+ * Permission to use, copy, and distribute this software and its
+ * documentation for any purpose and without fee is hereby granted,
+ * provided that the above copyright notice appear in all copies and that
+ * both that copyright notice and this permission notice appear in
+ * supporting documentation.
+ * 
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * $Id: map.cpp,v 1.1 2000/03/12 10:11:31 dds Exp $
+ */
+
+#include <cstdlib>
+#include <stddef.h>
+#include <string.h>
+#include <iostream.h>
+
+#include "error.h"
+#include "filter.h"
+#include "map.h"
+
+#include "charset.h"
+
+struct s_charset *
+cs_find(char *name) 
+{
+	struct s_charset *cp;
+
+	for (cp = charsets; cp->name; cp++)
+		if (strcmp(name, cp->name) == 0)
+			return (cp);
+	return (NULL);
+}
+
+static int
+cecompare(const struct s_charentry *a, const struct s_charentry *b)
+{
+	return (a->unicode - b->unicode);
+}
+
+void usage();
+
+/*
+ * Create a character map between the character set specified in
+ * in and the character set specified in out.  Characters that can
+ * not be represented in out are set to def.
+ */
+map::map(char *in, char *out, char def)
+{
+	int i;
+	struct s_charset *inp, *outp;
+	struct s_charentry *cep, ce;
+	struct s_charset *unicode = charsets;		// By convention
+	int unmap = 0;
+
+	default_char = def;
+	if ((inp = cs_find(in)) == NULL) {
+		cerr << "Unknown source character set " << in << "\n";
+		usage();
+	}
+	if ((outp = cs_find(out)) == NULL) {
+		cerr << "Unknown target character set " << out << "\n";
+		usage();
+	}
+	if (inp == outp) {
+		identity = true;
+		return;
+	} else
+		identity = false;
+	if (inp == unicode)
+		mapsize = inp->count;		// Unicode is special case
+	else {
+		mapsize = 0;
+		for (i = 0; i < inp->count; i++)
+			mapsize = (mapsize < inp->ce[i].charval) ? inp->ce[i].charval : mapsize;
+	}
+	charmap = new int[mapsize];
+	for (i = 0; i < mapsize; i++)
+		charmap[i] = def;
+	for (i = 0; i < inp->count; i++) {
+		if (inp == unicode)
+			ce.unicode = i;
+		else
+			ce.unicode = inp->ce[i].unicode;
+		if (ce.unicode == 0xffff)
+			continue;			// Unknown character
+		if (outp == unicode)
+			charmap[inp->ce[i].charval] = inp->ce[i].unicode;
+		else {
+			cep = (struct s_charentry *)bsearch(&ce, outp->ce, outp->count, sizeof(struct s_charentry), (int (*)(const void*, const void*))cecompare);
+			if (cep)
+				if (inp == unicode)
+					charmap[i] = cep->charval;
+				else
+					charmap[inp->ce[i].charval] = cep->charval;
+			else
+				unmap++;
+		}
+	}
+	if (outp == unicode)
+		ocs = "UNICODE-1-1";
+	else
+		ocs = outp->name;
+	/*
+	if (unmap)
+		fprintf(stderr, "%d characters could not be mapped\n", unmap);
+	*/
+}
+
+int
+map::getcharacter()
+{
+	int c = input->getcharacter();
+
+	if (identity)
+		return (c);
+	if (c == EOF)
+		return (EOF);
+	else if (c >= mapsize)
+		return (default_char);
+	else
+		return (charmap[c]);
+}
+
+char *
+map::outputcs()
+{
+	return (ocs);
+}
