@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: grconv.cpp,v 1.7 2000/05/06 19:27:11 dds Exp $
+ * $Id: grconv.cpp,v 1.8 2000/05/06 20:03:27 dds Exp $
  */
 
 #include <stdlib.h>
@@ -58,11 +58,6 @@ void lexut843(lex *l);
 void lexuhtmll1(lex *l);
 void lexuhtmls(lex *l);
 
-char *encoding_names[] = {
-	"UCS-2", "UTF-8", "UTF-7", "Java", "HTML", 
-	"8bit", "Base64", "Quoted", "RTF", "HTML-Symbol", "HTML-Lat",
-};
-
 void
 usage()
 {
@@ -86,7 +81,7 @@ usage()
 	exit(1);
 }
 
-static void
+void
 encodings()
 {
 	cout << "Valid input/output encodings are:\n"
@@ -192,29 +187,102 @@ output_encoding(char *name)
 }
 
 static void
+copyout(filter *f)
+{
+	int rc;
+
+	while ((rc = f->getcharacter()) != EOF)
+		cout << (unsigned char)rc;
+}
+
+static void
 rosetta()
 {
 	// CP-1253
-	strinput in("¢ëöá, ôï ðñþôï ãñÜììá ôïõ åëëçíéêïý áëöáâÞôïõ.  ÙÌÅÃÁ, ÔÏ ÔÅËÅÕÔÁÉÏ.");
-	// Alfa, to proto gramma tou ellinikou alfabitou.  OMEGA, TO TELEFTAIO.
+	strinput in(
+	// Alfa, to proto gramma tou ellinikou alfabitou.
+	"¢ëöá, ôï ðñþôï ãñÜììá ôïõ åëëçíéêïý áëöáâÞôïõ.  "
+	"Á¢ÂÃÄÅ¸ÆÇ¹ÈÉºÚÊËÌÍÎÏ¼ÐÑÓÔÕ¾ÛÖ×ØÙ¿áÜâãäåÝæçÞèéßúÀêëìíîïüðñòóôõýûàö÷øùþ"
+	);
+
 	filter *f;			// Current pipeline input
+	char *enc8[] = {
+		"8bit", "Base64", "Quoted", "RTF", "HTML", "HTML-Symbol",
+		"HTML-Lat",
+	};
+	char *enc16[] = {
+		"UCS-2", "UTF-8", "UTF-7", "Java", "HTML", 
+	};
 
-	map *m;
-	for (struct s_charset *cp = charsets; cp->name; cp++) {
-		cout << cp->name << ": ";
+	// Transliterate
+	f = &in;
+	translit *t = new translit;
+	t->setinput(f);
+	f = t;
+	cout << "-x transliterate\n";
+	copyout(f);
+	cout << "\n";
+	in.rewind();
+	delete t;
 
+	// Transcribe
+	f = &in;
+	lex *l = new lex(lexi843);
+	l->setinput(f);
+	f = l;
+	cout << "-x transcribe\n";
+	copyout(f);
+	cout << "\n";
+	in.rewind();
+	delete l;
+
+	// 8 bit character sets with all 8 bit encodings
+	for (int i = 0; i < sizeof(enc8) / sizeof(char *); i++) {
+		filter *oenc = output_encoding(enc8[i]);
+		for (struct s_charset *cp = charsets; cp->name; cp++) {
+			if (cp->alias || is_unicode(cs_find(cp->name)))
+				continue;
+
+			f = &in;
+			map *m = new map("cp1253", cp->name, '?');
+			m->setinput(f);
+			f = m;
+
+			if (oenc) {
+				oenc->setinput(f);
+				f = oenc;
+			}
+
+			cout << "-t " << cp->name << " -T " << enc8[i] << ":\n";
+			copyout(f);
+			cout << "\n";
+			in.rewind();
+			delete m;
+		}
+		if (oenc) delete oenc;
+	}
+
+	// Unicode with all 16 bit encodings
+	map *m = new map("cp1253", "Unicode", '?');
+	for (int i = 0; i < sizeof(enc16) / sizeof(char *); i++) {
 		f = &in;
-		m = new map("cp1253", cp->name, '?');
 		m->setinput(f);
 		f = m;
 
-		int rc;
-		while ((rc = f->getcharacter()) != EOF)
-			cout << (unsigned char)rc;
+		filter *oenc = output_encoding(enc16[i]);
+		if (oenc) {
+			oenc->setinput(f);
+			f = oenc;
+		}
+
+		cout << "-t Unicode -T " << enc16[i] << ":\n";
+		copyout(f);
 		cout << "\n";
+
 		in.rewind();
-		delete m;
+		if (oenc) delete oenc;
 	}
+	delete m;
 }
 
 int
@@ -359,7 +427,7 @@ main(int argc, char *argv[])
 	if (oenc) {
 		oenc->setinput(f);
 		f = oenc;
-	} else if (strcmp(targetcs, "Unicode") == 0) {
+	} else if (is_unicode(cs_find(targetcs))) {
 		oenc = new ucs2o;		// Default Unicode encoding
 		oenc->setinput(f);
 		f = oenc;
@@ -368,9 +436,7 @@ main(int argc, char *argv[])
 	if (oenc && hflag)
 		oenc->header();
 
-	int rc;
-	while ((rc = f->getcharacter()) != EOF)
-		cout << (unsigned char)rc;
+	copyout(f);
 
 	if (oenc && hflag)
 		oenc->footer();
