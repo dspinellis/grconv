@@ -11,7 +11,7 @@
 .\" WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 .\" MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 .\"
-.\" $Id: grconv.1,v 1.6 2000/05/17 13:28:15 dds Exp $
+.\" $Id: grconv.1,v 1.7 2000/07/14 13:01:50 dds Exp $
 .\"
 .SH NAME
 grconv \- universal Greek character code converter
@@ -130,9 +130,20 @@ the current officially sanctified 8-bit character set ISO 8859-7:1987.
 .LP
 Unicode data can be read or written using the following encodings:
 .br
-UCS-2, UTF-8, UTF-7, Java, and HTML.
-.IP "UCS-2"
-The UCS-2 encoding represents all Unicode characters using two bytes.
+UCS-2, UCS-16, UCS-16BE, UCS-16LE, UTF-8, UTF-7, Java, and HTML.
+.IP "UCS-2, UCS-16"
+The UCS-2 and UCS-16 encodings represent all Unicode characters using two
+bytes.
+On input the byte-swapped version of the Unicode character 65534
+(ZERO WIDTH NON-BREAKING SPACE 0xfffe) is transparently used for
+byte-order detection purposes.
+.IP "UCS-16BE"
+The UCS-16BE encoding represents all Unicode characters using two
+bytes in big-endian (network order) ordering.
+.IP "UCS-16LE"
+The UCS-16LE encoding represents all Unicode characters using two
+bytes in little-endian (e.g. Intel) ordering.
+This format should not be used for generating portable output.
 .IP "UTF-8"
 The UTF-8 encoding represents ASCII characters using their ASCII encoding
 and other characters using a variable length 8-bit encoding scheme.
@@ -200,7 +211,8 @@ character sets.
 .IP "\fB\-s\fP \fIcs\fP"
 Specify the source character set.
 The default source character set is ISO-8859-7:1987 for 8-bit input encodings
-and Unicode for 16 bit input encodings (UCS-2, UTF-8, UTF-7, and Java).
+and Unicode for 16 bit input encodings (UCS-2, UCS-16, UCS-16BE,
+UCS-16LE, UTF-8, UTF-7, and Java).
 .IP "\fB\-T\fP \fIenc\fP"
 Specify the target encoding.
 The default target encoding is UCS-2 for Unicode and 8bit for all other
@@ -208,7 +220,8 @@ character sets.
 .IP "\fB\-t\fP \fIcs\fP"
 Specify the target character set.
 The default target character set is ISO-8859-7:1987 for 8-bit output encodings
-and Unicode for 16 bit output encodings (UCS-2, UTF-8, UTF-7, and Java).
+and Unicode for 16 bit output encodings (UCS-2, UCS-16, UCS-16BE, UCS-16LE,
+UTF-8, UTF-7, and Java).
 .IP "\fB\-x\fP \fIxl\fP"
 Specify \fItranscribe\fP to perform transcription of Greek
 text into Latin characters or \fItransliterate\fP
@@ -322,6 +335,10 @@ may vary.
 .LP
 \fIGrconv\fP is targeted towards the handling of Greek text.
 It will not deal correctly with ISO 10646 characters with a scalar value above
+0x1000.
+.LP
+RFC 2045 specifies exactly how line breaks are to be converted
+into carriage return, line feed pairs when handling base-64 and
 quoted printable encodings.
 Since \fIgrconv\fP is not directly tied to mail transfer mechanisms
 we handle line breaks using the underlying implementation of the

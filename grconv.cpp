@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: grconv.cpp,v 1.9 2000/05/06 20:04:23 dds Exp $
+ * $Id: grconv.cpp,v 1.10 2000/07/14 13:01:50 dds Exp $
  */
 
 #include <stdlib.h>
@@ -29,7 +29,8 @@
 #include "translit.h"
 
 // Output encodings
-#include "ucs2o.h"
+#include "ucs16beo.h"
+#include "ucs16leo.h"
 #include "utf8o.h"
 #include "utf7o.h"
 #include "htmll1o.h"
@@ -42,6 +43,8 @@
 
 // Input encodings
 #include "ucs2i.h"
+#include "ucs16bei.h"
+#include "ucs16lei.h"
 #include "utf8i.h"
 #include "utf7i.h"
 #include "htmli.h"
@@ -67,9 +70,9 @@ usage()
 	"grconv [-S enc] [-s cs] -x xl [-d c] [file...]\n"
 	"grconv -r [-t cs] [-T enc] [-h] [-d c] [file...]\n"
 	"grconv -v|-L|-R\n"
-	"\t-S enc\tSpecify source encoding (default to 8bit or UCS-2)\n"
+	"\t-S enc\tSpecify source encoding (default to 8bit or UCS-16)\n"
 	"\t-s cs\tSpecify source character set (default to ISO-8859-7)\n"
-	"\t-T enc\tSpecify target encoding (default to 8bit or UCS-2)\n"
+	"\t-T enc\tSpecify target encoding (default to 8bit or UCS-16)\n"
 	"\t-t cs\tSpecify target character set (default to ISO-8859-7)\n"
 	"\t-x xl\tSpecify one of transcribe or transliterate (ISO 843:1997)\n"
 	"\t-r\tPerform reverse transliteration\n"
@@ -85,7 +88,7 @@ void
 encodings()
 {
 	cout << "Valid input/output encodings are:\n"
-		"\tFor Unicode data: UCS-2 UTF-8 UTF-7 Java HTML\n"
+		"\tFor Unicode data: UCS-2 UCS-16 UCS-16BE UCS-16LE UTF-8 UTF-7 Java HTML\n"
 		"\tFor 8-bit data: 8bit Base64 Quoted RTF HTML HTML-Symbol HTML-Lat\n"
 	"Valid character sets are:\n";
 	int margin=0;
@@ -98,7 +101,7 @@ encodings()
 			cout << "\n";
 		}
 	}
-	cout << "\nMany of the character set names are aliases.\n";
+	cout << "\nMany of the character set names and encodings are aliases.\n";
 	cout << "Transcription/transliteration are performed only to plain ASCII.\n";
 }
 
@@ -127,6 +130,12 @@ input_encoding(char *name)
 		return NULL;
 	else if (strcmp(name, "UCS-2") == 0)
 		return new ucs2i;
+	else if (strcmp(name, "UCS-16") == 0)
+		return new ucs2i;
+	else if (strcmp(name, "UCS-16LE") == 0)
+		return new ucs16lei;
+	else if (strcmp(name, "UCS-16BE") == 0)
+		return new ucs16bei;
 	else if (strcmp(name, "UTF-8") == 0)
 		return new utf8i;
 	else if (strcmp(name, "UTF-7") == 0)
@@ -159,7 +168,13 @@ output_encoding(char *name)
 	if (strcmp(name, "8bit") == 0)
 		return NULL;
 	else if (strcmp(name, "UCS-2") == 0)
-		return new ucs2o;
+		return new ucs16beo;
+	else if (strcmp(name, "UCS-16") == 0)
+		return new ucs16beo;
+	else if (strcmp(name, "UCS-16BE") == 0)
+		return new ucs16beo;
+	else if (strcmp(name, "UCS-16LE") == 0)
+		return new ucs16leo;
 	else if (strcmp(name, "UTF-8") == 0)
 		return new utf8o;
 	else if (strcmp(name, "UTF-7") == 0)
@@ -210,7 +225,7 @@ rosetta()
 		"HTML-Lat",
 	};
 	char *enc16[] = {
-		"UCS-2", "UTF-8", "UTF-7", "Java", "HTML", 
+		"UCS-16", "UCS-16LE", "UTF-8", "UTF-7", "Java", "HTML", 
 	};
 	int i;
 
@@ -428,7 +443,7 @@ main(int argc, char *argv[])
 		oenc->setinput(f);
 		f = oenc;
 	} else if (is_unicode(cs_find(targetcs))) {
-		oenc = new ucs2o;		// Default Unicode encoding
+		oenc = new ucs16beo;		// Default Unicode encoding
 		oenc->setinput(f);
 		f = oenc;
 	}
