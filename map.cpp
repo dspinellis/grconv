@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: map.cpp,v 1.4 2000/05/06 20:21:48 dds Exp $
+ * $Id: map.cpp,v 1.5 2002/01/03 21:29:29 dds Exp $
  */
 
 #include <cstdlib>
@@ -67,10 +67,12 @@ map::map(char *in, char *out, char def)
 	if ((inp = cs_find(in)) == NULL) {
 		cerr << "Unknown source character set " << in << "\n";
 		encodings();
+		exit(1);
 	}
 	if ((outp = cs_find(out)) == NULL) {
 		cerr << "Unknown target character set " << out << "\n";
 		encodings();
+		exit(1);
 	}
 	if (inp == outp) {
 		identity = true;
