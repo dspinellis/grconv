@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: quotei.h,v 1.1 2000/03/12 13:26:19 dds Exp $
+ * $Id: quotei.h,v 1.2 2003/06/03 12:22:12 dds Exp $
  */
 
 #ifndef QUOTEI_
@@ -22,6 +22,7 @@
 // See RFC 1521
 class quotei: public filter {
 private:
+	bool eatnl;
 	inline int hexval(char c)
 	{
 		char *hex = "0123456789ABCDEF";
@@ -39,11 +40,19 @@ public:
 
 	again:
 		c = input->getagain:
+		c = input->getcharacter();
+		if (eatnl && c == '\n') {
+			eatnl = false;
+			goto again;
 		}
 		// See if quoted escape
 		if (c != '=')
 			return (c);			// Includes EOF
 
+		c1 = input->getcharacter();
+		if (c1 == '\r') {
+			eatnl = true;
+			goto again;			// Soft break
 		}
 		if (c1 == '\n')
 			goto again;			// Soft break
