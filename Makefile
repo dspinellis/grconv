@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.7 2000/03/18 18:04:37 dds Exp $
+# $Id: Makefile,v 1.8 2000/03/18 18:22:24 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
@@ -89,6 +89,11 @@ Makefile.msc: Makefile
 
 chartbl.cpp charset.cpp: defacto.txt mkc.pl
 	perl mkc.pl rfc1345.txt defacto.txt
+
+# Does not yet work
+depend:
+	makedepend -Y -o'.$$(O)' -- $(CFLAGS) -- `ls *.cpp`
+	ls *.cpp | sed 's/\(.*\).cpp/\1.$$(O): \1.cpp/' >>Makefile
 
 grconv.ps: grconv.1
 	groff -man -Tps $^ > $@
