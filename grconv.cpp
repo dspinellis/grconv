@@ -46,7 +46,7 @@ usage()
 	cerr << "grconv [-S enc] [-s cs] [-t cs] [-T enc] [-h] [-d c]\n"
 			"grconv [-S enc] [-s cs] -x xl [-d c]\n"
 			"grconv -r [-t cs] [-T enc] [-h] [-d c]\n"
-			"grconv -v\n"
+			"grconv -v|-L\n"
 			"\t-S enc\tSpecify source encoding (default to 8bit or UCS-2)\n"
 			"\t-s cs\tSpecify source character set (default to ISO-8859-7)\n"
 			"\t-T enc\tSpecify target encoding (default to 8bit or UCS-2)\n"
@@ -55,17 +55,18 @@ usage()
 			"\t-r\tPerform reverse transliteration\n"
 			"\t-h\tCreate header for the output encoding\n"
 			"\t-d char\tSpecify character for unknown mappings (default to space)\n"
-			"\t-v\tDisplay program version\n"
+			"\t-v\tDisplay program version and copyright\n"
 			"\t-L\tList supported encodings\n";
+	exit(1);
 }
 
 static void
 encodings()
 {
-	cout << "Valid input/output encodings are:\n";
-		"\tFor Unicode data: UCS-2 UTF-8 UTF-7 Java RTF HTML\n";
-		"\tFor 8-bit data: 8bit Base64 Quoted RTF HTML HTML-Lat\n";
-		"Valid character sets are:\n";
+	cout << "Valid input/output encodings are:\n"
+		"\tFor Unicode data: UCS-2 UTF-8 UTF-7 Java RTF HTML\n"
+		"\tFor 8-bit data: 8bit Base64 Quoted RTF HTML HTML-Lat\n"
+	"Valid character sets are:\n";
 	for (struct s_charset *cp = charsets; cp->name; cp++)
 		cout << cp->name << " ";
 	cout << "(many character set names are aliases)\n";
@@ -94,8 +95,19 @@ main(int argc, char *argv[])
 			encodings();
 			exit(0);
 		case 'v':
-			cout << "Universal Greek character converter.  Version $Rel$\n"
-				"(C) Copyright 2000 Diomidis D. Spinelllis\n";
+			cout << 
+	"Universal Greek character code converter.  $Revision: 1.2 $\n"
+	"(C) Copyright 2000 Diomidis D. Spinelllis\n\n"
+
+	"Permission to use, copy, and distribute this software and its\n"
+	"documentation for any purpose and without fee is hereby granted,\n"
+	"provided that the above copyright notice appear in all copies and that\n"
+	"both that copyright notice and this permission notice appear in\n"
+	"supporting documentation.\n\n"
+
+	"THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR IMPLIED\n"
+	"WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF\n"
+	"MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.\n";
 			exit(0);
 		case 'd':
 			if (!optarg || optarg[1]) {
