@@ -11,7 +11,7 @@
 .\" WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 .\" MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 .\"
-.\" $Id: grconv.1,v 1.4 2000/05/06 20:03:42 dds Exp $
+.\" $Id: grconv.1,v 1.5 2000/05/06 20:05:26 dds Exp $
 .\"
 .SH NAME
 grconv \- universal Greek character code converter
@@ -180,8 +180,8 @@ using a textual representation of the corresponding mathematical symbol
 character (e.g. &alpha;) as defined in the HTML 4 specification.
 Since this encoding should normaly be used to encode mathematical symbols
 and not Greek text its use to create new content is
-discouriaged; code HTML pages containing Greek text using 8 bit
-characters, HTML decimal codes, or UTF-8.
+discouriaged; code HTML pages containing Greek text using ISO-8859-7
+and 8 bit characters or Unicode and UTF-8.
 .IP "HTML-Lat"
 The HTML-Lat encoding represents characters whose value is above 127
 using a textual representation of the corresponding ISO-8859-1 (Latin 1)
@@ -190,8 +190,8 @@ This encoding is sometimes used by defficient HTML-editors and
 generators to represent Greek characters that occupy the same code
 positions in the ISO-8859-7 character set.
 Since this use is non-standard its use to create new content is
-discouriaged; code HTML pages containing Greek text using 8 bit
-characters, HTML decimal codes, or UTF-8.
+discouriaged; code HTML pages containing Greek text using ISO-8859-7
+and 8 bit characters or Unicode and UTF-8.
 .SH OPTIONS
 .IP "\fB\-S\fP \fIenc\fP"
 Specify the source encoding.
