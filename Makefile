@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.5 2000/03/13 09:13:35 dds Exp $
+# $Id: Makefile,v 1.6 2000/03/13 17:54:16 dds Exp $
 #
 
 VERSION=1.0
@@ -166,4 +166,5 @@ webpage:
 	copy grconv.txt $(WEBTARGET)\grconv.txt
 	copy grconv.pdf $(WEBTARGET)\grconv.pdf
 	copy grconv.ps $(WEBTARGET)\grconv.ps
+	copy grconv.jpg $(WEBTARGET)
 	sed "s/VER-REL/$(VERSION)-$(RELEASE)/g" <index.html >$(WEBTARGET)\index.html
