@@ -1,5 +1,5 @@
-.TH GRCONV 1 "9 MARCH 2000"
-.\" (C) Copyright 2000 Diomidis Spinellis.  All rights reserved.
+.TH GRCONV 1 "3 JANUARY 2002"
+.\" (C) Copyright 2000-2002 Diomidis Spinellis.  All rights reserved.
 .\" 
 .\" Permission to use, copy, and distribute this software and its
 .\" documentation for any purpose and without fee for noncommercial use
@@ -11,7 +11,7 @@
 .\" WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 .\" MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 .\"
-.\" $Id: grconv.1,v 1.8 2001/02/13 10:50:38 dds Exp $
+.\" $Id: grconv.1,v 1.9 2002/01/03 21:31:09 dds Exp $
 .\"
 .SH NAME
 grconv \- universal Greek character code converter
@@ -293,6 +293,20 @@ Convert an ISO-8859-7, base64 coded mail document into
 RTF to be read by Microsoft Word:
 .br
 grconv -S Base64 -h -t Windows -T RTF <mail.txt >mail.rtf
+.LP
+Microsoft Office 2000 applications refuse to paste it as Greek and
+show weird symbols instead.
+The following pipeline will convert the clipboard data into Unicode
+Greek.
+Also note that the console code page must be set to the Greek OEM
+character set (code page 737) using the \fIchcp\fP command.
+.br
+Note that \fIwinclip\fP is part of the \fIoutwit\fP tool suite,
+probably available at the same site that hosts \fIgrconv\fP.
+winclip -p | grconv -s 737 -T UCS-16LE | winclip -cu
+.LP
+For the last two examples,
+note that \fIwinclip\fP is part of the \fIoutwit\fP tool suite,
 
 .LP
 K. Simonsen.  Character Mnemonics and Character Sets.
@@ -323,7 +337,7 @@ http://www.tlg.uci.edu/BetaCode.html
 (C) Copyright 2000-2002 Diomidis Spinellis.  All rights reserved.
 .LP
 Permission to use, copy, and distribute this software and its
-(C) Copyright 2000 Diomidis Spinellis.  All rights reserved.
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
 both that copyright notice and this permission notice appear in
 supporting documentation.
