@@ -12,7 +12,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ubeta.l,v 1.3 2001/02/13 09:11:02 dds Exp $
+ * $Id: ubeta.l,v 1.4 2001/02/13 09:39:32 dds Exp $
  */
 
 
@@ -40,8 +40,11 @@ static lex *thislex;
 STRESS		(\/|\\|=|\(\/|\(\\|\(=|\)\/|\)\\|\)=|=\||\/\||\\\|)
 NOSTRESS	(\(|\)|\|)?
 
+%s	ROMAN
 
 %%
+
+<INITIAL>{
 
 \*{STRESS}A	{ l->nq((unsigned char)'¢'); return; }
 \*{NOSTRESS}A	{ l->nq((unsigned char)'Á'); return; }
@@ -118,6 +121,10 @@ W{NOSTRESS}	{ l->nq((unsigned char)'ù'); return; }
 X		{ l->nq((unsigned char)'÷'); return; }
 Y		{ l->nq((unsigned char)'ø'); return; }
 Z		{ l->nq((unsigned char)'æ'); return; }
+}
+
+\$[0-9]*	{ BEGIN(INITIAL); }	/* Switch to Greek font */
+&[0-9]*		{ BEGIN(ROMAN); }	/* Switch to Roman font */
 
 .		{ l->nq(*yytext); return; }
 \n		{ l->nq('\n'); return; }
