@@ -15,7 +15,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: mkc.pl,v 1.2 2000/03/12 10:34:58 dds Exp $
+# $Id: mkc.pl,v 1.3 2000/03/12 10:44:25 dds Exp $
 #
 
 $tbl{'greek-ccitt'} = 1;
@@ -31,6 +31,12 @@ $tbl{'MS1253'} = 1;
 $tbl{'MAC_GR'} = 1;
 $tbl{'Latin-greek-1'} = 1;
 $tbl{'ISO_8859-7:1987'} = 1;
+
+push(@{$alias{'ISO_8859-7:1987'}}, '928');
+push(@{$alias{'ISO_8859-7:1987'}}, 'ELOT928');
+push(@{$alias{'ISO10646'}}, 'ISO_10646');
+push(@{$alias{'ISO10646'}}, 'ISO-10646');
+push(@{$alias{'ISO10646'}}, 'Unicode');
 
 # Read character descriptions
 while (<>) {
@@ -86,15 +92,12 @@ print CS '
 #include "chartbl.h"
 
 struct s_charset charsets[] = {
-	{ "Unicode", 0xffff, 0 }, 		// The first by convention
-	// { "ISO10646", 0xffff, 0 }, 		// Alias
 ';
 print CT '#include "charset.h"
 ';
 for $charset (keys %char) {
 	$count = grep(1, keys %{$n{$charset}});
 	$name = $charset;
-	# next if ($charset eq 'ISO10646');	# Handled by special case
 	$name =~ s/[^a-z0-9A-Z]/_/g;
 	print CS "\t{ \"$charset\", $count, $name},\n";
 	for $alias (@{$alias{$charset}}) {

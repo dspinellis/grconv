@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: map.cpp,v 1.1 2000/03/12 10:11:31 dds Exp $
+ * $Id: map.cpp,v 1.2 2000/03/12 10:44:25 dds Exp $
  */
 
 #include <cstdlib>
@@ -54,7 +54,6 @@ map::map(char *in, char *out, char def)
 	int i;
 	struct s_charset *inp, *outp;
 	struct s_charentry *cep, ce;
-	struct s_charset *unicode = charsets;		// By convention
 	int unmap = 0;
 
 	default_char = def;
@@ -71,43 +70,29 @@ map::map(char *in, char *out, char def)
 		return;
 	} else
 		identity = false;
-	if (inp == unicode)
-		mapsize = inp->count;		// Unicode is special case
-	else {
-		mapsize = 0;
-		for (i = 0; i < inp->count; i++)
-			mapsize = (mapsize < inp->ce[i].charval) ? inp->ce[i].charval : mapsize;
-	}
+	mapsize = 0;
+	for (i = 0; i < inp->count; i++)
+		mapsize = (mapsize < inp->ce[i].charval) ? inp->ce[i].charval : mapsize;
 	charmap = new int[mapsize];
 	for (i = 0; i < mapsize; i++)
 		charmap[i] = def;
 	for (i = 0; i < inp->count; i++) {
-		if (inp == unicode)
-			ce.unicode = i;
-		else
-			ce.unicode = inp->ce[i].unicode;
+		ce.unicode = inp->ce[i].unicode;
 		if (ce.unicode == 0xffff)
 			continue;			// Unknown character
-		if (outp == unicode)
-			charmap[inp->ce[i].charval] = inp->ce[i].unicode;
-		else {
-			cep = (struct s_charentry *)bsearch(&ce, outp->ce, outp->count, sizeof(struct s_charentry), (int (*)(const void*, const void*))cecompare);
-			if (cep)
-				if (inp == unicode)
-					charmap[i] = cep->charval;
-				else
-					charmap[inp->ce[i].charval] = cep->charval;
-			else
-				unmap++;
-		}
+		cep = (struct s_charentry *)bsearch(&ce, outp->ce, outp->count, sizeof(struct s_charentry), (int (*)(const void*, const void*))cecompare);
+		if (cep)
+			charmap[inp->ce[i].charval] = cep->charval;
+		else
+			unmap++;
 	}
-	if (outp == unicode)
+	if (outp->count > 1000)		// Must be Unicode
 		ocs = "UNICODE-1-1";
 	else
 		ocs = outp->name;
 	/*
 	if (unmap)
-		fprintf(stderr, "%d characters could not be mapped\n", unmap);
+		cerr << unmap <<" characters could not be mapped\n";
 	*/
 }
 
