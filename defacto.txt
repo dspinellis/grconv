@@ -1,0 +1,56 @@
+  &charset MS737
+  &rem source: Microsoft Windows Implementation
+  &alias cp737
+  &alias 737
+  &alias 437GR
+  &code 0
+  NU SH SX EX ET EQ AK BL BS HT LF VT FF CR SO SI
+  DL D1 D2 D3 D4 NK SY EB CN EM SB EC FS GS RS US
+  SP ! " Nb DO % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ?
+  At A B C D E F G H I J K L M N O P Q R S T U V W X Y Z <( // )> '> _
+  '! a b c d e f g h i j k l m n o p q r s t u v w x y z (! !! !) '? DT
+  A* B* G* D* E* Z* Y* H* I* K* L* M* N* C* O* P*
+  R* S* T* U* F* X* Q* W* a* b* g* d* e* z* y* h*
+  i* k* l* m* n* c* o* p* r* s* *s t* u* f* x* q*
+  .S :S ?S vv vl vL Vl Dl dL VL VV LD UL Ul uL dl
+  ur uh dh vr hh vh vR Vr UR DR UH DH VR HH VH uH
+  Uh dH Dh Ur uR dR Dr Vh vH ul dr FB LB lB RB TB
+  w* a% e% y% j* i% o% u% v* w% A% E% Y% I% O% U%
+  W% +- >= =< Iu Il -: ?2 Ob .M Sb RT nS 2S fS NS
+
+  &charset MS1253
+  &alias cp1253
+  &alias Windows
+  &alias Windows-1253
+  &rem source: Microsoft Windows Implementation
+  &code 0
+  NU SH SX EX ET EQ AK BL BS HT LF VT FF CR SO SI
+  DL D1 D2 D3 D4 NK SY EB CN EM SB EC FS GS RS US
+  SP ! " Nb DO % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ?
+  At A B C D E F G H I J K L M N O P Q R S T U V W X Y Z <( // )> '> _
+  '! a b c d e f g h i j k l m n o p q r s t u v w x y z (! !! !) '? DT
+  PA HO BH NH IN NL SA ES HS HJ VS PD PU RI S2 S3
+  DC P1 P2 TS CC MW SG EG SS GC SC CI ST OC PM AC
+  NS 9' A% Pd Cu Ye BB SE ': Co ?? << NO -- Rg ??
+  DG +- 2S 3S ?? ?? ?? ?? E% Y% I% >> O% 12 U% W%
+  i3 A* B* G* D* E* Z* Y* H* I* K* L* M* N* C* O*
+  P* R* ?? S* T* U* F* X* Q* W* J* V* a% e% y% i%
+  u3 a* b* g* d* e* z* y* h* i* k* l* m* n* c* o*
+  p* r* *s s* t* u* f* x* q* w* j* v* o% u% w% ??
+
+  &charset MAC_GR
+  &rem source: Michalis Tsaoutos <tsaoutos@hypernet.hyper.gr>
+  &code 0
+  NU SH SX EX ET EQ AK BL BS HT LF VT FF CR SO SI
+  DL D1 D2 D3 D4 NK SY EB CN EM SB EC FS GS RS US
+  SP ! " Nb DO % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ?
+  At A B C D E F G H I J K L M N O P Q R S T U V W X Y Z <( // )> '> _
+  '! a b c d e f g h i j k l m n o p q r s t u v w x y z (! !! !) '? DT
+  A: 1S 2S E' 3S O: U: '% a! a> a: '' ': c, e' e!
+  e> e: Pd TM i> i: 0M 12 %0 o> o: BB ?? u! u> u:
+  /- G* D* H* L* C* P* ss Rg Co S* J* SE != DG '.
+  A* +- =< >= Ye B* E* Z* Y* I* K* M* F* V* Q* W*
+  a% N* NO O* R* ?2 T* << >> .3 NS U* X* A% E% oe
+  -M -N "6 "9 '6 '9 -: Y% I% O% U% e% y% i% o% W%
+  u% a* b* q* d* e* f* g* y* i* c* k* l* m* n* o*
+  p* w% r* s* t* h* w* *s x* u* z* j* v* i3 u3 ??
