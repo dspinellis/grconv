@@ -18,10 +18,10 @@ make RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
 
 %install
 install -m 755 -o 0 -g 0 grconv /usr/bin/grconv
-install -m 644 -o 0 -g 0 grconv.1 /usr/man/man1
+install -m 644 -o 0 -g 0 grconv.1 /usr/share/man/man1
 
 %files
 %doc README COPYING ChangeLog
 /usr/bin/grconv
-/usr/man/man1/grconv.1
+/usr/share/man/man1/grconv.1
 
