@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.3 2000/03/12 12:38:34 dds Exp $
+# $Id: Makefile,v 1.4 2000/03/12 12:41:34 dds Exp $
 #
 
 VERSION=1.0
@@ -34,21 +34,21 @@ DOC=grconv.txt grconv.ps grconv.pdf grconv.html
 
 
 # Unix
-#EXE=
-#O=o
-#CC=g++
+EXE=
+O=o
+CC=g++
 # Development
 #CFLAGS=-g
 #CFLAGS=-O
 # RPM
-#CFLAGS=$(RPM_OPT_FLAGS)
+CFLAGS=$(RPM_OPT_FLAGS)
 
 # Windows
-EXE=.exe
-O=obj
-CC=cl
+#EXE=.exe
+#O=obj
+#CC=cl
 #CFLAGS=-Zi
-CFLAGS=-Ox
+#CFLAGS=-Ox
 
 all: grconv$(EXE)
 
