@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: stdinput.h,v 1.1 2000/03/12 12:26:19 dds Exp $
+ * $Id: stdinput.h,v 1.2 2000/03/12 12:40:32 dds Exp $
  */
 
 #ifndef STDINPUT_
@@ -40,6 +40,7 @@ private:
 	}
 public:
 	stdinput() { in = NULL; };
+	void
 	setargs(char **a)
 	{
 		argv = a;
