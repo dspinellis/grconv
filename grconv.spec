@@ -21,7 +21,7 @@ install -m 755 -o 0 -g 0 grconv /usr/bin/grconv
 install -m 644 -o 0 -g 0 grconv.1 /usr/man/man1
 
 %files
+%doc README COPYING ChangeLog
 /usr/bin/grconv
 /usr/man/man1/grconv.1
-
 

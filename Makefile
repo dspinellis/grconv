@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.10 2000/04/19 11:00:48 dds Exp $
+# $Id: Makefile,v 1.11 2000/04/19 11:24:44 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
@@ -39,7 +39,8 @@ SRC=base64i.h base64o.h charset.h error.cpp error.h filter.h getopt.cpp \
 	utf7.h utf7i.cpp utf7i.h utf7o.cpp utf7o.h utf8i.h utf8o.h \
 	htmlso.cpp htmlso.h \
 	i843.l uhtmls.l uhtmll1.l ut843.l \
-	mkc.pl rfc1345.txt defacto.txt Makefile grconv.spec index.html
+	mkc.pl rfc1345.txt defacto.txt Makefile grconv.spec index.html \
+	COPYING README ChangeLog
 
 DOC=grconv.txt grconv.ps grconv.pdf grconv.html
 
