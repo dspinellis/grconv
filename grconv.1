@@ -11,7 +11,7 @@
 .\" WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 .\" MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 .\"
-.\" $Id: grconv.1,v 1.5 2000/05/06 20:05:26 dds Exp $
+.\" $Id: grconv.1,v 1.6 2000/05/17 13:28:15 dds Exp $
 .\"
 .SH NAME
 grconv \- universal Greek character code converter
@@ -243,6 +243,11 @@ List the supported encodings and character sets.
 Print a ``Rosetta stone'' of a test phrase and the Greek character set
 transliterated, transcribed, in all supported character sets and
 their respective encodings.
+Under normal circumstances only one character set and encoding of the
+test phrase will be readable on an output device that supports rendering
+of Greek fonts.
+This option can therefore be used to decide the character set and encoding
+that is best supported in a particular environment.
 
 .SH EXAMPLES
 Convert a file from MS-DOS to Windows Greek:
