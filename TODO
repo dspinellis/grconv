@@ -1,0 +1,12 @@
+LaTeX/troff encodings I/O
+Postscript symbol I/O
+*TLG/Perseus BETA O
+Ibycus
+Base64/Quoted Unicode UTF8 I/O
+Distinguish between encodings and representations
+For HTML and other symbol output handle stress characters
+
+Add RACE encoding/decoding
+Add SMS encoding/decoding
+Support decoding of polytonic Greek
+
