@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.11 2000/04/19 11:24:44 dds Exp $
+# $Id: Makefile,v 1.12 2000/04/20 09:15:34 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
@@ -43,6 +43,8 @@ SRC=base64i.h base64o.h charset.h error.cpp error.h filter.h getopt.cpp \
 	COPYING README ChangeLog
 
 DOC=grconv.txt grconv.ps grconv.pdf grconv.html
+
+LEXOUT=i843.cpp uhtmll1.cpp uhtmls.cpp ut843.cpp
 
 ## Unix START
 EXE=
@@ -104,19 +106,19 @@ depend:
 	ls *.cpp | sed 's/\(.*\).cpp/\1.$$(O): \1.cpp/' >>Makefile
 
 grconv.ps: grconv.1
-	groff -man -Tps $^ > $@
+	groff -man -Tps $? > $@
 
 grconv.txt: grconv.1
-	groff -man -Tascii $^ | col -b > $@
+	groff -man -Tascii $? | col -b > $@
 
 grconv.pdf: grconv.ps
-	ps2pdf $^ $@
+	ps2pdf $? $@
 
 grconv.html: grconv.1
-	man2html $^ | sed '1d;s,<A HREF="http.*</A>,,;s/^,$$/man2html,/' > $@
+	man2html $? | sed '1d;s,<A HREF="http.*</A>,,;s/^,$$/man2html,/' > $@
 
 clean:
-	rm -f i843.cpp uhtmll1.cpp uhtmls.cpp ut843.cpp
+	rm -f $(LEXOUT)
 	rm -f charset.cpp chartbl.cpp chartbl.h
 	rm -f *.o *.obj grconv.exe grconv
 	rm -f $(DOC)
@@ -172,8 +174,9 @@ webpage:
 
 DOSDIR=/dos/dds/src/grconv
 
-dosfs:
-	tar cvfz $(DOSDIR)/RCS.tgz RCS
-	cp $(SRC) $(DOSDIR)
-	cp *.rpm $(DOSDIR)
-	cp grconv.{tar.gz,html,txt,pdf,ps} $(DOSDIR)
+dosfs: $(LEXOUT)
+	tar cfz $(DOSDIR)/RCS.tgz RCS
+	cp -f $(SRC) $(DOSDIR)
+	cp -f *.rpm $(DOSDIR)
+	cp -f grconv.{tar.gz,html,txt,pdf,ps} $(DOSDIR)
+	cp -f $(LEXOUT) $(DOSDIR)
