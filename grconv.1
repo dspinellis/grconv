@@ -11,7 +11,7 @@
 .\" WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 .\" MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 .\"
-.\" $Id: grconv.1,v 1.7 2000/07/14 13:01:50 dds Exp $
+.\" $Id: grconv.1,v 1.8 2001/02/13 10:50:38 dds Exp $
 .\"
 .SH NAME
 grconv \- universal Greek character code converter
@@ -162,7 +162,7 @@ It is specified in RFC-2070.
 .LP
 All 8-bit character sets can be read or written using the following encodings:
 .br
-8bit, Base64, Quoted, RTF, HTML, HTML-Symbol, and HTML-Lat.
+8bit, Base64, Quoted, RTF, HTML, HTML-Symbol, HTML-Lat, and Beta.
 .IP "8bit"
 The 8bit encoding represents all characters using a single byte.
 .IP "Base64"
@@ -203,6 +203,14 @@ positions in the ISO-8859-7 character set.
 Since this use is non-standard its use to create new content is
 discouriaged; code HTML pages containing Greek text using ISO-8859-7
 and 8 bit characters or Unicode and UTF-8.
+.IP "Beta"
+The Beta encoding is mainly used to encode Greek classical texts
+in projects such as the TLG (Thesaurus Linguae Graecae).
+Since \fIgronv\fP targets modern Greek encodings, the acute, grave, and
+circumflex accents are converted to the modern Greek acute accent.
+In addition, the smooth and rough breathings and the iota subscript are lost.
+\fIGrconv\fP handles internaly Beta code switching from a Greek font to a Roman 
+font, however most other Beta escape sequences are not processed.
 .SH OPTIONS
 .IP "\fB\-S\fP \fIenc\fP"
 Specify the source encoding.
@@ -311,7 +319,9 @@ Network Information Center, Request for Comments 2152, May 1997.  RFC-2152.
 .LP
 The TLG Beta Code Manual.
 http://www.tlg.uci.edu/BetaCode.html
-
+.SH AUTHOR
+(C) Copyright 2000-2002 Diomidis Spinellis.  All rights reserved.
+.LP
 Permission to use, copy, and distribute this software and its
 (C) Copyright 2000 Diomidis Spinellis.  All rights reserved.
 provided that the above copyright notice appear in all copies and that

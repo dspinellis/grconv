@@ -1,5 +1,5 @@
 # 
-# (C) Copyright 2000 Diomidis Spinellis
+# (C) Copyright 2000, 2001 Diomidis Spinellis
 # 
 # Permission to use, copy, and distribute this software and its
 # documentation for any purpose and without fee is hereby granted,
@@ -11,12 +11,12 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.20 2000/07/14 13:10:49 dds Exp $
+# $Id: Makefile,v 1.21 2001/02/13 10:50:38 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
 
-VERSION=1.4
+VERSION=1.5
 RELEASE=1
 NAME=grconv-$(VERSION)
 SPEC=$(NAME)-$(RELEASE).spec
@@ -29,7 +29,8 @@ BINDIR=/usr/local/bin
 
 OBJ=i843.$(O) grconv.$(O) queue.$(O) charset.$(O) chartbl.$(O) getopt.$(O) \
 	map.$(O) translit.$(O) ut843.$(O) error.$(O) utf7o.$(O) utf7i.$(O) \
-	utf7.$(O) htmll1o.$(O) uhtmll1.$(O) htmlso.$(O) uhtmls.$(O)
+	utf7.$(O) htmll1o.$(O) uhtmll1.$(O) htmlso.$(O) uhtmls.$(O) \
+	ubeta.$(O) betao.$(O)
 
 SRC=base64i.h base64o.h charset.h error.cpp error.h filter.h getopt.cpp \
 	getopt.h grconv.1 grconv.cpp htmli.h htmll1o.cpp htmll1o.h htmlo.h \
@@ -39,13 +40,14 @@ SRC=base64i.h base64o.h charset.h error.cpp error.h filter.h getopt.cpp \
 	unistd.h utf7.cpp \
 	utf7.h utf7i.cpp utf7i.h utf7o.cpp utf7o.h utf8i.h utf8o.h \
 	htmlso.cpp htmlso.h \
-	i843.l uhtmls.l uhtmll1.l ut843.l \
+	betao.cpp betao.h \
+	i843.l uhtmls.l uhtmll1.l ut843.l ubeta.l \
 	mkc.pl rfc1345.txt defacto.txt Makefile grconv.spec index.html \
 	COPYING README ChangeLog
 
 DOC=grconv.txt grconv.ps grconv.pdf grconv.html
 
-LEXOUT=i843.cpp uhtmll1.cpp uhtmls.cpp ut843.cpp
+LEXOUT=i843.cpp uhtmll1.cpp uhtmls.cpp ut843.cpp ubeta.cpp
 
 ## Unix START
 EXE=

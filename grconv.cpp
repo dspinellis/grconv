@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: grconv.cpp,v 1.10 2000/07/14 13:01:50 dds Exp $
+ * $Id: grconv.cpp,v 1.11 2001/02/13 10:50:38 dds Exp $
  */
 
 #include <stdlib.h>
@@ -35,6 +35,7 @@
 #include "utf7o.h"
 #include "htmll1o.h"
 #include "htmlso.h"
+#include "betao.h"
 #include "htmlo.h"
 #include "javao.h"
 #include "base64o.h"
@@ -60,6 +61,7 @@ void lexi843(lex *l);
 void lexut843(lex *l);
 void lexuhtmll1(lex *l);
 void lexuhtmls(lex *l);
+void lexubeta(lex *l);
 
 void
 usage()
@@ -79,7 +81,7 @@ usage()
 	"\t-h\tCreate header for the output encoding\n"
 	"\t-d char\tSpecify character for unknown mappings (default to space)\n"
 	"\t-v\tDisplay program version and copyright\n"
-	"\t-L\tList supported character sets and encodings\n";
+	"\t-L\tList supported character sets and encodings\n"
 	"\t-R\tPrint a \"Rosetta stone\" of a phrase in all character sets\n";
 	exit(1);
 }
@@ -89,7 +91,7 @@ encodings()
 {
 	cout << "Valid input/output encodings are:\n"
 		"\tFor Unicode data: UCS-2 UCS-16 UCS-16BE UCS-16LE UTF-8 UTF-7 Java HTML\n"
-		"\tFor 8-bit data: 8bit Base64 Quoted RTF HTML HTML-Symbol HTML-Lat\n"
+		"\tFor 8-bit data: 8bit Base64 Quoted RTF HTML HTML-Symbol HTML-Lat Beta\n"
 	"Valid character sets are:\n";
 	int margin=0;
 	for (struct s_charset *cp = charsets; cp->name; cp++) {
@@ -154,6 +156,8 @@ input_encoding(char *name)
 		return new lex(lexuhtmls);
 	else if (strcmp(name, "HTML-Lat") == 0)
 		return new lex(lexuhtmll1);
+	else if (strcmp(name, "Beta") == 0)
+		return new lex(lexubeta);
 	else {
 		error("Unknown -S source encoding ");
 		cerr << name << "\n";
@@ -193,6 +197,8 @@ output_encoding(char *name)
 		return new htmlso;
 	else if (strcmp(name, "HTML-Lat") == 0)
 		return new htmll1o;
+	else if (strcmp(name, "Beta") == 0)
+		return new betao;
 	else {
 		error("Unknown -T target encoding ");
 		cerr << name << "\n";
@@ -222,7 +228,7 @@ rosetta()
 	filter *f;			// Current pipeline input
 	char *enc8[] = {
 		"8bit", "Base64", "Quoted", "RTF", "HTML", "HTML-Symbol",
-		"HTML-Lat",
+		"HTML-Lat", "Beta",
 	};
 	char *enc16[] = {
 		"UCS-16", "UCS-16LE", "UTF-8", "UTF-7", "Java", "HTML", 
