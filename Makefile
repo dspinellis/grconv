@@ -11,8 +11,12 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.2 2000/03/12 12:30:54 dds Exp $
+# $Id: Makefile,v 1.3 2000/03/12 12:38:34 dds Exp $
 #
+
+VERSION=1.0
+RELEASE=1
+NAME=grconv-$(VERSION)
 
 OBJ=lexi843.$(O) grconv.$(O) queue.$(O) charset.$(O) chartbl.$(O) getopt.$(O) \
 	map.$(O) translit.$(O) lexut843.$(O) error.$(O) utf7o.$(O) utf7i.$(O) \
@@ -24,30 +28,27 @@ SRC=base64i.h base64o.h charset.h error.cpp error.h filter.h getopt.cpp \
 	quoteo.h rtfi.h rtfo.h stdinput.h transcribe.l translit.cpp \
 	translit.h ucs2i.h ucs2o.h uhtmll1.l unistd.h untranslit.l utf7.cpp \
 	utf7.h utf7i.cpp utf7i.h utf7o.cpp utf7o.h utf8i.h utf8o.h \
-	mkc.pl rfc1345.txt defacto.txt Makefile
+	mkc.pl rfc1345.txt defacto.txt Makefile grconv.spec
 
 DOC=grconv.txt grconv.ps grconv.pdf grconv.html
 
-VERSION=1.0
-RELEASE=1
-NAME=grconv-$(VERSION)
 
 # Unix
-EXE=
-O=o
-CC=g++
+#EXE=
+#O=o
+#CC=g++
 # Development
 #CFLAGS=-g
 #CFLAGS=-O
 # RPM
-CFLAGS=$(RPM_OPT_FLAGS)
+#CFLAGS=$(RPM_OPT_FLAGS)
 
 # Windows
-#EXE=.exe
-#O=obj
-#CC=cl
+EXE=.exe
+O=obj
+CC=cl
 #CFLAGS=-Zi
-#CFLAGS=-Ox
+CFLAGS=-Ox
 
 all: grconv$(EXE)
 
@@ -121,6 +122,9 @@ clean:
 	rm -f *.rpm
 	rm -f grconv.tar.gz
 
+clobber: clean
+	rm -f $(SRC)
+
 grconv.tar.gz: $(SRC)
 	tar cvfz grconv.tar.gz $(SRC)
 	rm -rf $(NAME)
@@ -131,6 +135,7 @@ grconv.tar.gz: $(SRC)
 
 rpm: grconv.tar.gz
 	cp grconv.tar.gz /usr/src/redhat/SOURCES
+	cp grconv.spec $(NAME)-$(RELEASE).spec
 	rpm -ba $(NAME)-$(RELEASE).spec
 	cp /usr/src/redhat/SRPMS/$(NAME)-$(RELEASE).src.rpm .
 	cp /usr/src/redhat/RPMS/i386/$(NAME)-$(RELEASE).i386.rpm .
