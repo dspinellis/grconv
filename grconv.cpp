@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: grconv.cpp,v 1.8 2000/05/06 20:03:27 dds Exp $
+ * $Id: grconv.cpp,v 1.9 2000/05/06 20:04:23 dds Exp $
  */
 
 #include <stdlib.h>
@@ -204,7 +204,6 @@ rosetta()
 	"’λφα, το πρώτο γράμμα του ελληνικού αλφαβήτου.  "
 	"Α’ΒΓΔΕΈΖΗΉΘΙΊΪΚΛΜΝΞΟΌΠΡΣΤΥΎΫΦΧΨΩΏαάβγδεέζηήθιίϊΐκλμνξοόπρςστυύϋΰφχψωώ"
 	);
-
 	filter *f;			// Current pipeline input
 	char *enc8[] = {
 		"8bit", "Base64", "Quoted", "RTF", "HTML", "HTML-Symbol",
@@ -213,6 +212,7 @@ rosetta()
 	char *enc16[] = {
 		"UCS-2", "UTF-8", "UTF-7", "Java", "HTML", 
 	};
+	int i;
 
 	// Transliterate
 	f = &in;
@@ -237,7 +237,7 @@ rosetta()
 	delete l;
 
 	// 8 bit character sets with all 8 bit encodings
-	for (int i = 0; i < sizeof(enc8) / sizeof(char *); i++) {
+	for (i = 0; i < sizeof(enc8) / sizeof(char *); i++) {
 		filter *oenc = output_encoding(enc8[i]);
 		for (struct s_charset *cp = charsets; cp->name; cp++) {
 			if (cp->alias || is_unicode(cs_find(cp->name)))
@@ -264,7 +264,7 @@ rosetta()
 
 	// Unicode with all 16 bit encodings
 	map *m = new map("cp1253", "Unicode", '?');
-	for (int i = 0; i < sizeof(enc16) / sizeof(char *); i++) {
+	for (i = 0; i < sizeof(enc16) / sizeof(char *); i++) {
 		f = &in;
 		m->setinput(f);
 		f = m;
