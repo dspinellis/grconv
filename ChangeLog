@@ -1,4 +1,8 @@
-$Id: ChangeLog,v 1.2 2000/05/06 21:36:42 dds Exp $
+$Id: ChangeLog,v 1.3 2000/05/17 13:36:30 dds Exp $
+
+Wed May 17 16:36:01 EEST 2000
+Version 1.3.2
+Better documentation for compiling and the Rosetta option.
 
 Sun May  7 00:34:46 EEST 2000
 Version 1.3
