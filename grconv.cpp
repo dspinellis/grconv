@@ -1,5 +1,5 @@
 /* 
- * (C) Copyright 2000 Diomidis Spinellis.
+ * (C) Copyright 2000-2002 Diomidis Spinellis.
  * 
  * Permission to use, copy, and distribute this software and its
  * documentation for any purpose and without fee is hereby granted,
@@ -11,11 +11,17 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: grconv.cpp,v 1.11 2001/02/13 10:50:38 dds Exp $
+ * $Id: grconv.cpp,v 1.12 2002/01/03 21:30:44 dds Exp $
  */
 
 #include <stdlib.h>
 #include <string.h>
+
+// To set binary I/O
+#ifdef _WIN32
+#include <io.h>
+#include <fcntl.h>
+#endif
 
 #include "error.h"
 
@@ -112,7 +118,7 @@ version()
 {
 	cout << 
 	"Universal Greek character code converter.  Version " VERNAME "\n"
-	"(C) Copyright 2000 Diomidis D. Spinelllis.  All rights reserved.\n\n"
+	"(C) Copyright 2000-2002 Diomidis D. Spinelllis.  All rights reserved.\n\n"
 
 	"Permission to use, copy, and distribute this software and its\n"
 	"documentation for any purpose and without fee is hereby granted,\n"
@@ -393,9 +399,9 @@ main(int argc, char *argv[])
 
 	// Apply defaults
 	if (!sourcecs)
-		sourcecs = ((ienc && ienc->owidth() == 16) ? "Unicode" : "ISO-8859-7");
+		sourcecs = (char*)((ienc && ienc->owidth() == 16) ? "Unicode" : "ISO-8859-7");
 	if (!targetcs)
-		targetcs = ((oenc && oenc->iwidth() == 16) ? "Unicode" : "ISO-8859-7");
+		targetcs = (char*)((oenc && oenc->iwidth() == 16) ? "Unicode" : "ISO-8859-7");
 
 	if (ienc) {
 		ienc->setinput(f);
@@ -453,6 +459,12 @@ main(int argc, char *argv[])
 		oenc->setinput(f);
 		f = oenc;
 	}
+
+#ifdef _WIN32
+	// The library cr-lf translation messes up Unicode I/O
+	_setmode(_fileno(stdin), O_BINARY);
+	_setmode(_fileno(stdout), O_BINARY);
+#endif
 
 	if (oenc && hflag)
 		oenc->header();
