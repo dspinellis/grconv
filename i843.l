@@ -12,7 +12,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: i843.l,v 1.2 2000/03/12 13:12:18 dds Exp $
+ * $Id: i843.l,v 1.3 2000/03/18 17:20:23 dds Exp $
  */
 
 /* Redefine these values for stressed output */
@@ -261,7 +261,8 @@ NOGREEK	[^בÜגדהוÝזחÞטיßתְךכלםמןüנסףפץ‎ûאצקרש‏ֱ¢ֲֳִֵ¸ֶַ¹ָֹ÷ÚÊֻּֽ־ֿ¼׀ׁ׃װױ¾Ûײ׳״Ù¿]
 
 %%
 
-yywrap()
+int
+yywrap(void)
 {
 	return (1);
 }
