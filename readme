@@ -1,7 +1,6 @@
-Grconv converts between a large number of character sets, transcription,
-and transliteration methods that are used to represent Greek text.
-In addition, it supports a number of encodings used to represent
-those character sets in different environments.  For complete documentation
+Grconv converts between almost 100 character sets, transcription,
+transliteration methods, and encodings that are used to represent
+Greek text in different environments.  For complete documentation
 refer to the program's manual page.
 
 To compile grconv edit the Makefile setting the following variables:
@@ -13,10 +12,11 @@ You will need a C++ compiler and the appropriate libraries, and the
 flex lexical analyzer.
 
 Run "make" to compile the program and "make install" to install the
-program and its documentation.
+program and its documentation.  Under Windows run "nmake win32exe"
+to compile the program.
 
 Many thanks to Alexis Zavras, Isidor Kouvelas, and Alexandros Chousainov
 who provided valuable input and suggestions during the program's testing.
 
 Diomidis Spinellis
-$Id: readme,v 1.1 2000/04/19 11:17:29 dds Exp $
+$Id: readme,v 1.2 2000/05/06 20:05:44 dds Exp $
