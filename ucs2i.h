@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ucs2i.h,v 1.3 2000/07/14 12:59:06 dds Exp $
+ * $Id: ucs2i.h,v 1.4 2000/07/14 13:10:57 dds Exp $
  */
 
 #ifndef UCS2I_
@@ -21,13 +21,13 @@
 class ucs2i: public filter {
 private:
 	bool bof;		// At beginning of file
-	enum {BIG_ENDIAN, LITTLE_ENDIAN} endian;
+	enum {BIG, LITTLE} endian;
 public:
 	virtual int owidth() { return (16); };		// Output char width
 	ucs2i()
 	{
-		bof = TRUE;
-		endian = BIG_ENDIAN;
+		bof = true;
+		endian = BIG;
 	};
 
 	int getcharacter()
@@ -41,17 +41,17 @@ public:
 		if (c2 == EOF)
 			fatal("EOF within a UCS-16 pair\n");
 		switch (endian) {
-			case BIG_ENDIAN: r =  (c1 << 8) | c2; break;
-			case LITTLE_ENDIAN: r =  (c2 << 8) | c1; break;
+			case BIG: r =  (c1 << 8) | c2; break;
+			case LITTLE: r =  (c2 << 8) | c1; break;
 		}
 		if (bof)
 			if (r == 0xfffe) {
-				endian = LITTLE_ENDIAN;
-				bof = FALSE;
+				endian = LITTLE;
+				bof = false;
 				goto again;
 			} else if (r == 0xfeff) {
-				endian = BIG_ENDIAN;
-				bof = FALSE;
+				endian = BIG;
+				bof = false;
 				goto again;
 			}
 		if (r == 0xfffe)
