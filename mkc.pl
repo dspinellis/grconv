@@ -4,8 +4,18 @@
 # Produce a set of sorted code set translation tables
 #
 # (C) Copyright 1996, 2000 D. Spinellis.  All rights reserved.
-# This program may be freely used and reproduced as long  as this notice
-# is retained and modified copies are clearly marked as such.
+# 
+# Permission to use, copy, and distribute this software and its
+# documentation for any purpose and without fee is hereby granted,
+# provided that the above copyright notice appear in all copies and that
+# both that copyright notice and this permission notice appear in
+# supporting documentation.
+# 
+# THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+# MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+#
+# $Id: mkc.pl,v 1.2 2000/03/12 10:34:58 dds Exp $
 #
 
 $tbl{'greek-ccitt'} = 1;
@@ -17,16 +27,17 @@ $tbl{'IBM423'} = 1;
 $tbl{'IBM869'} = 1;
 $tbl{'IBM851'} = 1;
 $tbl{'MS737'} = 1;
-$tbl{'MS928'} = 1;
+$tbl{'MS1253'} = 1;
 $tbl{'MAC_GR'} = 1;
 $tbl{'Latin-greek-1'} = 1;
-$tbl{$target = 'ISO_8859-7:1987'} = 1;
+$tbl{'ISO_8859-7:1987'} = 1;
 
 # Read character descriptions
 while (<>) {
 	next if (/^Simonsen     / || /^\f/ || /^$/ || /^RFC 1345/);
 	last if (/^4\.  CHARSETS/);
 	chop;
+	s/\r//;
 
 	# Read descriptions
 	if (/ SP     0020    SPACE/ ..  /4.  CHARSETS/) {
@@ -52,6 +63,10 @@ while  (<>) {
 		$n = 0;
 	}
 	next unless ($tbl{$charset});
+	if (/^  \&alias (.*)/) {
+		push(@{$alias{$charset}}, $1);
+		next;
+	}
 	next if (/^  \&[a-z]/);
 	next if (/^Simonsen     / || /^\f/ || /^$/ || /^RFC 1345/);
 	chop;
@@ -63,29 +78,37 @@ while  (<>) {
 	}
 }
 
-print '
-struct s_charentry {
-	int unicode;
-	int charval;
-};
+open(CS, '>charset.cpp') || die;
+open(CT, '>chartbl.cpp') || die;
+open(CTH, '>chartbl.h') || die;
+print CS '
+#include "charset.h"
+#include "chartbl.h"
 
-struct s_charset {
-	char *name;			// Character set name
-	int count;
-	struct s_charentry ce[1500];	// Sorted by Unicode value
-} charsets[] = {
-
+struct s_charset charsets[] = {
+	{ "Unicode", 0xffff, 0 }, 		// The first by convention
+	// { "ISO10646", 0xffff, 0 }, 		// Alias
 ';
-
+print CT '#include "charset.h"
+';
 for $charset (keys %char) {
 	$count = grep(1, keys %{$n{$charset}});
-	print "\t{ \"$charset\", $count, {\n";
-	for $two (sort byuni keys %{$n{$charset}}) {
-		print "\t\t{ 0x$uni{$two}, 0x$n{$charset}{$two} },\t/* $two: $desc{$two} */\n";
+	$name = $charset;
+	# next if ($charset eq 'ISO10646');	# Handled by special case
+	$name =~ s/[^a-z0-9A-Z]/_/g;
+	print CS "\t{ \"$charset\", $count, $name},\n";
+	for $alias (@{$alias{$charset}}) {
+		print CS "\t{ \"$alias\", $count, $name},\t\t// Alias\n";
 	}
-	print "\t} },\n";
+	print CT "struct s_charentry $name\[\] = {\n";
+	print CTH "extern struct s_charentry $name\[\];\n";
+	for $two (sort byuni keys %{$n{$charset}}) {
+		print CT "\t{ 0x$uni{$two}, 0x$n{$charset}{$two} },\t/* $two: $desc{$two} */\n";
+	}
+	print CT "};\n\n";
 }
-print "};\n";
+print CS "\t{ 0, 0, 0},\n";
+print CS "};\n";
 
 sub
 byuni
