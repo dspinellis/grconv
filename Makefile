@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.14 2000/05/06 21:36:42 dds Exp $
+# $Id: Makefile,v 1.15 2000/05/06 21:39:01 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
@@ -161,6 +161,7 @@ ci:
 WEBTARGET=\dds\pubs\web\sw\greek\grconv
 
 webpage:
+	del $(WEBTARGET)
 	copy grconv.tar.gz $(WEBTARGET)\$(NAME)-$(RELEASE).tar.gz
 	copy grconv.html $(WEBTARGET)
 	copy grconv.exe $(WEBTARGET)
@@ -178,5 +179,5 @@ dosfs: $(LEXOUT)
 	tar cfz $(DOSDIR)/RCS.tgz RCS
 	cp -f $(SRC) $(DOSDIR)
 	cp -f *.rpm $(DOSDIR)
-	cp -f grconv.{tar.gz,html,txt,pdf,ps} $(DOSDIR)
+	cp -f grconv.{tar.gz,html,txt,pdf,ps,jpg} $(DOSDIR)
 	cp -f $(LEXOUT) $(DOSDIR)
