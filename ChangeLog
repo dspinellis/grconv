@@ -1,4 +1,9 @@
-$Id: ChangeLog,v 1.3 2000/05/17 13:36:30 dds Exp $
+$Id: ChangeLog,v 1.4 2000/07/14 12:59:22 dds Exp $
+
+Fri Jul 14 15:08:58 EEST 2000
+Added UCS-16LE, UCS-16BE, UCS-16 (alias for UCS-2).
+Auto-detect input endianess for UCS-2/UCS-16.
+Documentation.
 
 Wed May 17 16:36:01 EEST 2000
 Version 1.3.2
