@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: grconv.cpp,v 1.4 2000/04/19 10:52:29 dds Exp $
+ * $Id: grconv.cpp,v 1.5 2000/04/20 09:33:21 dds Exp $
  */
 
 #include <stdlib.h>
@@ -126,6 +126,8 @@ main(int argc, char *argv[])
 	char *sourcecs = NULL;
 	char *targetcs = NULL;
 	char defchar = ' ';
+	char *defsourcecs = "ISO-8859-7";	// Default encodings
+	char *deftargetcs = "ISO-8859-7";
 	char *xflag = NULL;
 	filter *ienc = NULL;
 	filter *oenc = NULL;
@@ -157,13 +159,16 @@ main(int argc, char *argv[])
 			}
 			if (strcmp(optarg, "8bit") == 0)
 				;
-			else if (strcmp(optarg, "UCS-2") == 0)
+			else if (strcmp(optarg, "UCS-2") == 0) {
+				defsourcecs = "Unicode";
 				ienc = new ucs2i;
-			else if (strcmp(optarg, "UTF-8") == 0)
+			} else if (strcmp(optarg, "UTF-8") == 0) {
+				defsourcecs = "Unicode";
 				ienc = new utf8i;
-			else if (strcmp(optarg, "UTF-7") == 0)
+			} else if (strcmp(optarg, "UTF-7") == 0) {
+				defsourcecs = "Unicode";
 				ienc = new utf7i;
-			else if (strcmp(optarg, "HTML") == 0)
+			} else if (strcmp(optarg, "HTML") == 0)
 				ienc = new htmli;
 			else if (strcmp(optarg, "Base64") == 0)
 				ienc = new base64i;
@@ -171,9 +176,10 @@ main(int argc, char *argv[])
 				ienc = new quotei;
 			else if (strcmp(optarg, "RTF") == 0)
 				ienc = new rtfi;
-			else if (strcmp(optarg, "Java") == 0)
+			else if (strcmp(optarg, "Java") == 0) {
+				defsourcecs = "Unicode";
 				ienc = new javai;
-			else if (strcmp(optarg, "HTML-Symbol") == 0)
+			} else if (strcmp(optarg, "HTML-Symbol") == 0)
 				ienc = new lex(lexuhtmls);
 			else if (strcmp(optarg, "HTML-Lat") == 0)
 				ienc = new lex(lexuhtmll1);
@@ -190,13 +196,16 @@ main(int argc, char *argv[])
 			}
 			if (strcmp(optarg, "8bit") == 0)
 				;
-			else if (strcmp(optarg, "UCS-2") == 0)
+			else if (strcmp(optarg, "UCS-2") == 0) {
+				deftargetcs = "Unicode";
 				oenc = new ucs2o;
-			else if (strcmp(optarg, "UTF-8") == 0)
+			} else if (strcmp(optarg, "UTF-8") == 0) {
+				deftargetcs = "Unicode";
 				oenc = new utf8o;
-			else if (strcmp(optarg, "UTF-7") == 0)
+			} else if (strcmp(optarg, "UTF-7") == 0) {
+				deftargetcs = "Unicode";
 				oenc = new utf7o;
-			else if (strcmp(optarg, "HTML") == 0)
+			} else if (strcmp(optarg, "HTML") == 0)
 				oenc = new htmlo;
 			else if (strcmp(optarg, "Base64") == 0)
 				oenc = new base64o;
@@ -204,9 +213,10 @@ main(int argc, char *argv[])
 				oenc = new quoteo;
 			else if (strcmp(optarg, "RTF") == 0)
 				oenc = new rtfo;
-			else if (strcmp(optarg, "Java") == 0)
+			else if (strcmp(optarg, "Java") == 0) {
+				deftargetcs = "Unicode";
 				oenc = new javao;
-			else if (strcmp(optarg, "HTML-Symbol") == 0)
+			} else if (strcmp(optarg, "HTML-Symbol") == 0)
 				oenc = new htmlso;
 			else if (strcmp(optarg, "HTML-Lat") == 0)
 				oenc = new htmll1o;
@@ -254,9 +264,9 @@ main(int argc, char *argv[])
 
 	// Apply defaults
 	if (!sourcecs)
-		sourcecs = "ISO-8859-7";
+		sourcecs = defsourcecs;
 	if (!targetcs)
-		targetcs = "ISO-8859-7";
+		targetcs = deftargetcs;
 
 	if (ienc) {
 		ienc->setinput(f);
