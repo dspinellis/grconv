@@ -1,0 +1,331 @@
+.TH GRCONV 1 "9 MARCH 2000"
+.\" (C) Copyright 2000 Diomidis Spinellis.  All rights reserved.
+.\" 
+.\" Permission to use, copy, and distribute this software and its
+.\" documentation for any purpose and without fee for noncommercial use
+.\" is hereby granted, provided that the above copyright notice appear in
+.\" all copies and that both that copyright notice and this permission notice
+.\" appear in supporting documentation.
+.\" 
+.\" THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR IMPLIED
+.\" WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+.\" MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+.\"
+.\" $Id: grconv.1,v 1.4 2000/05/06 20:03:42 dds Exp $
+.\"
+.SH NAME
+grconv \- universal Greek character code converter
+.SH SYNOPSIS
+\fBgrconv\fP 
+[\fB\-S enc\fP]
+[\fB\-s cs\fP]
+[\fB\-t cs\fP]
+[\fB\-T enc\fP]
+[\fB\-h\fP]
+[\fB\-d c\fP]
+[\fIfile\fR...]
+.br
+\fBgrconv\fP
+[\fB\-S enc\fP]
+[\fB\-s cs\fP]
+\fB\-x xl\fP
+[\fB\-d c\fP]
+[\fIfile\fR...]
+.br
+\fBgrconv\fP
+\fB\-r\fP
+[\fB\-t cs\fP]
+[\fB\-T enc\fP]
+[\fB\-h\fP]
+[\fB\-d c\fP]
+[\fIfile\fR...]
+.br
+\fBgrconv\fP
+\fB\-v\fP|\fB\-L\fP|\fB-R\fP
+.SH DESCRIPTION
+\fIGrconv\fP 
+converts between a large number of character sets, transcription,
+and transliteration methods that are used to represent Greek text.
+In addition, it supports a number of encodings used to represent
+those character sets in different environments.
+\fIGrconv\fP reads the file(s) specified in its command line
+printing the converted results on its standard output,
+or runs as a filter, reading text from its standard
+input printing the converted result on its standard
+output; the redirection operator > can be used to write to files.
+\fIGrconv\fP can be used in three different ways:
+.IP "1."
+To convert between one character set and its representation method
+into another.
+.IP "2."
+To transcribe or transliterate Greek text represented using a specified
+method into plain Latin characters.
+.IP "3."
+To convert Latin text produced by the above transliteration operation
+back into a specified representation of Greek text.
+.LP
+The following character sets can be specified for the source and
+the target text:
+.br
+MS737, cp737, 737, 437GR, IBM423, cp423, ebcdic-cp-gr, Latin-greek-1, 
+iso-ir-27, greek7-old, iso-ir-18, greek-ccitt, iso-ir-150, latin-greek, 
+iso-ir-19, greek7, iso-ir-88, IBM851, cp851, 851, MAC_GR, ISO_5428:1980, 
+iso-ir-55, MS1253, cp1253, Windows, Windows-1253, ISO10646, ISO_10646, 
+ISO-10646, Unicode, IBM869, cp869, 869, cp-gr, ISO_8859-7:1987, 928, 
+ELOT928, iso-ir-126, ISO_8859-7, ISO-8859-7, ELOT_928, ECMA-118, greek, and
+greek8.
+.LP
+Note that many of the above names are aliases for the same character
+set.
+Descriptions of these character sets can be found in RFC-1947 and RFC-1345.
+.IP "MS737"
+(cp737, 737, 437GR)
+Microsoft DOS code page 737 also known as 437G.
+Note that some implementations of this code page do not include
+capital letters with acute or diairesis.
+.IP "IBM423"
+(cp423, ebcdic-cp-gr) IBM EBCDIC code page 423.
+.IP "Latin-greek-1"
+(iso-ir-27)
+Latin Greek 1.  This page only contains the Greek capital letters whose
+glyphs do not exist in the Latin alphabet.  The other capital letters
+are rendered using the equivalent Latin letter (e.g. "Greek capital
+letter alpha" is rendered as "Latin capital letter A").  
+When mapping "Latin Greek 1" text to ISO 8859-7 the Latin capital
+letters should only be transcribed to the equivalent Greek ones
+if a suitable heuristic determines that the specific Latin letters
+are used to represent Greek glyphs.
+\fIGrconv\fP does not perform this function.
+.IP "greek7-old"
+(iso-ir-18) old 7 bit Greek.
+.IP "greek-ccitt"
+(iso-ir-150) Greek CCITT.
+.IP "latin-greek"
+(iso-ir-19)
+Latin Greek.
+.IP "greek7"
+(iso-ir-88) 7 bit Greek.
+.IP "IBM851"
+(cp851, 851)
+IBM code page 851 used on OS/2 and PS/2 machines.
+.IP "MAC_GR"
+The Greek code page implemented on the Apple Macintosh computers.
+Contributed by Michalis Tsaoutos.
+.IP "ISO_5428:1980"
+(iso-ir-55) character set ISO 5428:1980.
+.IP "MS1253"
+(cp1253, Windows, Windows-1253)
+a character set similar to 8859-7 as implemented in Microsoft Windows 3.1/3.11,
+and Microsoft Windows 95/98.
+.IP "ISO10646"
+(ISO_10646, ISO-10646, Unicode)
+the Unicode standard 1.1.
+.IP "IBM869"
+(cp869, 869, cp-gr)
+IBM code page 869.
+.IP "ISO_8859-7:1987"
+(928, ELOT928, iso-ir-126, ISO_8859-7, ISO-8859-7, ELOT_928, ECMA-118,
+greek, greek8)
+the current officially sanctified 8-bit character set ISO 8859-7:1987.
+.LP
+Unicode data can be read or written using the following encodings:
+.br
+UCS-2, UTF-8, UTF-7, Java, and HTML.
+.IP "UCS-2"
+The UCS-2 encoding represents all Unicode characters using two bytes.
+.IP "UTF-8"
+The UTF-8 encoding represents ASCII characters using their ASCII encoding
+and other characters using a variable length 8-bit encoding scheme.
+.IP "UTF-7"
+The UTF-7 encoding represents ASCII characters using their ASCII encoding
+and other characters using a variable length 7-bit encoding scheme.
+It is therefore portable across communication channels supporting
+only 7 bit characters.
+.IP "Java"
+The Java encoding (also used by C++) represents Unicode characters
+using the sequence ``\\u\fIhexadecimal code\fP''.
+.IP "HTML"
+The HTML encoding represents 8-bit or Unicode characters
+using the sequence ``&#\fIdecimal code\fP;''.
+It is specified in RFC-2070.
+.LP
+All 8-bit character sets can be read or written using the following encodings:
+.br
+8bit, Base64, Quoted, RTF, HTML, HTML-Symbol, and HTML-Lat.
+.IP "8bit"
+The 8bit encoding represents all characters using a single byte.
+.IP "Base64"
+The base-64 encoding represents groups of three 8 bit characters using 
+four characters that are portable across many environments representing
+6 bit quantities.
+This method is commonly used to transfer mail.
+It is specified in RFC-2045.
+.IP "Quoted"
+The quoted-printable encoding represents characters that would not be
+portable across disparate environments (e.g. those whose value is
+above 127) using the sequence ``=\fIhexadecimal code\fP''.
+This method is also commonly used to transfer mail and specified in RFC-2045.
+.IP "RTF"
+The RTF encoding is an attempt to support Microsoft's rich text format.
+Output produced in the RTF encoding using the CP1253 character set and
+a header (via the \fI\-h\fP option) can be read by Microsoft Word.
+Since the program does not contain an RTF parser, RTF input converted
+into another character set needs to be hand-edited to remove RTF commands.
+.IP "HTML"
+The HTML encoding represents characters
+using the sequence ``&#\fIdecimal code\fP;''.
+.IP "HTML-Symbol"
+The HTML-Symbol encoding represents Greek characters
+using a textual representation of the corresponding mathematical symbol
+character (e.g. &alpha;) as defined in the HTML 4 specification.
+Since this encoding should normaly be used to encode mathematical symbols
+and not Greek text its use to create new content is
+discouriaged; code HTML pages containing Greek text using 8 bit
+characters, HTML decimal codes, or UTF-8.
+.IP "HTML-Lat"
+The HTML-Lat encoding represents characters whose value is above 127
+using a textual representation of the corresponding ISO-8859-1 (Latin 1)
+character (e.g. &Egrave;).
+This encoding is sometimes used by defficient HTML-editors and 
+generators to represent Greek characters that occupy the same code
+positions in the ISO-8859-7 character set.
+Since this use is non-standard its use to create new content is
+discouriaged; code HTML pages containing Greek text using 8 bit
+characters, HTML decimal codes, or UTF-8.
+.SH OPTIONS
+.IP "\fB\-S\fP \fIenc\fP"
+Specify the source encoding.
+The default source encoding is UCS-2 for Unicode and 8bit for all other
+character sets.
+.IP "\fB\-s\fP \fIcs\fP"
+Specify the source character set.
+The default source character set is ISO-8859-7:1987 for 8-bit input encodings
+and Unicode for 16 bit input encodings (UCS-2, UTF-8, UTF-7, and Java).
+.IP "\fB\-T\fP \fIenc\fP"
+Specify the target encoding.
+The default target encoding is UCS-2 for Unicode and 8bit for all other
+character sets.
+.IP "\fB\-t\fP \fIcs\fP"
+Specify the target character set.
+The default target character set is ISO-8859-7:1987 for 8-bit output encodings
+and Unicode for 16 bit output encodings (UCS-2, UTF-8, UTF-7, and Java).
+.IP "\fB\-x\fP \fIxl\fP"
+Specify \fItranscribe\fP to perform transcription of Greek
+text into Latin characters or \fItransliterate\fP
+to transliterate Greek text into Latin characters.
+Both transcription and transliteration are performed according to
+ISO 843:1997.
+The transliteration is a reversible operation that should be used
+when the results need to be converted back into exactly the same
+Greek text.
+The transcription is non-reversible, but attempts to model the
+way the Greek words are pronounced.
+It should be used to represent names of people, streets, etc.
+when an alternative way to obtain the original Greek spelling
+is available.
+.IP "\fB\-r\fP"
+Perform reverse transliteration from Latin into Greek text.
+.IP "\fB\-h\fP"
+Create header (and footer) for the output encoding.
+An encoding-specific header will be produced, typically describing
+the output encoding and character set, making it readable by
+appropriate software.
+As an example the HTML will be bracketted by appropriate tags.
+.IP "\fB\-d\fP \fIchar\fP"
+Specify the character to be used for non-existent mappings between character
+sets.
+The default character is space.
+.IP "\fB\-v\fP"
+Display program version and copyright message.
+.IP "\fB\-L\fP"
+List the supported encodings and character sets.
+.IP "\fB\-R\fP"
+Print a ``Rosetta stone'' of a test phrase and the Greek character set
+transliterated, transcribed, in all supported character sets and
+their respective encodings.
+
+.SH EXAMPLES
+Convert a file from MS-DOS to Windows Greek:
+.br
+grconv -s 737 -t Windows <greek.txt >wingreek.txt
+.LP
+Transcribe a Unicode UTF-8 file to a readable ASCII representation
+(also known as Grenglish):
+.br
+grconv -S UTF-8 -s Unicode -x transcribe <file.utf8
+.LP
+Transliterate an ISO-8859-7 file into ASCII:
+.br
+grconv -x transliterate <file1.txt >file2.txt
+.LP
+Perform a reverse transliteration function;
+file3.txt will be identical to file1.txt of the previous example:
+.br
+grconv -r <file2.txt >file3.txt
+.LP
+Convert an ISO-8859-7, base64 coded mail document into
+RTF to be read by Microsoft Word:
+.br
+grconv -S Base64 -h -t Windows -T RTF <mail.txt >mail.rtf
+
+.LP
+K. Simonsen.  Character Mnemonics and Character Sets.
+Network Information Center, Request for Comments 1345, June 1992.  RFC-1345.
+.LP
+Unicode Consortium. \fIThe Unicode Standard, Version 1.1\fP.
+.LP
+F. Yergeau, G. Nicol, G. Adams, and M. Duerst.
+Internationalization of the Hypertext Markup Language.
+Network Information Center, Request for Comments 2070, January 1997.  RFC-2070.
+.LP
+N. Freed and N. Borenstein.  
+Multipurpose Internet Mail Extensions (MIME) Part One:
+Format of Internet Message Bodies.
+Network Information Center, Request for Comments 2045, November 1996.  RFC-2045.
+.LP
+F. Yergeau.
+UTF-8, a transformation format of ISO 10646.
+Network Information Center, Request for Comments 2279, January 1998.  RFC-2279.
+.LP
+D. Goldsmith and M. Davis.
+UTF-7: A Mail-Safe Transformation Format of Unicode.
+Network Information Center, Request for Comments 2152, May 1997.  RFC-2152.
+.LP
+The TLG Beta Code Manual.
+http://www.tlg.uci.edu/BetaCode.html
+
+Permission to use, copy, and distribute this software and its
+(C) Copyright 2000 Diomidis Spinellis.  All rights reserved.
+provided that the above copyright notice appear in all copies and that
+both that copyright notice and this permission notice appear in
+supporting documentation.
+.LP
+THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+.SH BUGS
+The ISO 843 transliteration specifies that a letter i macron and 
+a letter o macron should be used to represent eta and omega.
+Since such glyphs are not part of any widely used character
+set we represent them by a letter i or o followed by an 
+underscore.
+According to ISO 843 this implementation is allowed, but is
+performed at a risk of interoperability.
+\fIGrconv\fP can correctly perform the reverse translitaration
+using the underscore convention; the behaviour of other programs
+may vary.
+.LP
+\fIGrconv\fP is targeted towards the handling of Greek text.
+It will not deal correctly with ISO 10646 characters with a scalar value above
+quoted printable encodings.
+Since \fIgrconv\fP is not directly tied to mail transfer mechanisms
+we handle line breaks using the underlying implementation of the
+system's C++ compiler.
+On Unix systems this means that carriage return, line feed pairs will
+almost certainly \fInot be produced\fP by \fIgrconv\fP.
+.LP
+\fIGrconv\fP implements almost 100 combinations of standard
+input / output encodings and character set conversions resulting
+in around 10,000 possible transformations.
+The code has not been reviewed and extensively tested;
+it should be treated as early beta quality.
