@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: utf7o.h,v 1.1 2000/03/12 13:26:19 dds Exp $
+ * $Id: utf7o.h,v 1.2 2000/05/06 19:27:11 dds Exp $
  */
 
 #ifndef UTF7O_
@@ -29,6 +29,7 @@ private:
 	void fillbuff();
 public:
 	int getcharacter() { return (queue::getcharacter()); };
+	virtual int iwidth() { return (16); };		// Input char width
 	void optional(bool opt);
 	utf7o()
 	{ 

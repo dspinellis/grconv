@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: javai.h,v 1.1 2000/03/12 13:26:19 dds Exp $
+ * $Id: javai.h,v 1.2 2000/05/06 19:27:11 dds Exp $
  */
 
 #ifndef JAVAI_
@@ -28,6 +28,7 @@ private:
 	int pushed_char;
 public:
 	javai() { pushed_char = EOF; }
+	virtual int owidth() { return (16); };		// Output char width
 
 	int getcharacter()
 	{

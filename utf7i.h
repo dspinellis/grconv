@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: utf7i.h,v 1.1 2000/03/12 13:26:19 dds Exp $
+ * $Id: utf7i.h,v 1.2 2000/05/06 19:27:11 dds Exp $
  */
 
 #ifndef UTF7I_
@@ -27,6 +27,7 @@ private:
 	int shifted, first, wroteone;
 public:
 	utf7i() { shifted = first = wroteone = 0; };
+	virtual int owidth() { return (16); };		// Output char width
 	int getcharacter() { return (queue::getcharacter()); };
 };
 #endif

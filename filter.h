@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: filter.h,v 1.1 2000/03/12 13:26:19 dds Exp $
+ * $Id: filter.h,v 1.2 2000/05/06 19:27:11 dds Exp $
  */
 
 #ifndef FILTER_
@@ -24,6 +24,8 @@ public:
 	virtual int getcharacter() = 0;
 	virtual void header() {};
 	virtual void footer() {};
+	virtual int iwidth() { return (8); };		// Input char width
+	virtual int owidth() { return (8); };		// Output char width
 	void setinput(filter *i) {input = i;};
 	virtual char *outputcs() { return ("X-Unknown"); };	// Output character set
 };

@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: grconv.cpp,v 1.6 2000/05/06 14:40:31 dds Exp $
+ * $Id: grconv.cpp,v 1.7 2000/05/06 19:27:11 dds Exp $
  */
 
 #include <stdlib.h>
@@ -71,7 +71,7 @@ usage()
 	"grconv [-S enc] [-s cs] [-t cs] [-T enc] [-h] [-d c] [file...]\n"
 	"grconv [-S enc] [-s cs] -x xl [-d c] [file...]\n"
 	"grconv -r [-t cs] [-T enc] [-h] [-d c] [file...]\n"
-	"grconv -v|-L\n"
+	"grconv -v|-L|-R\n"
 	"\t-S enc\tSpecify source encoding (default to 8bit or UCS-2)\n"
 	"\t-s cs\tSpecify source character set (default to ISO-8859-7)\n"
 	"\t-T enc\tSpecify target encoding (default to 8bit or UCS-2)\n"
@@ -82,6 +82,7 @@ usage()
 	"\t-d char\tSpecify character for unknown mappings (default to space)\n"
 	"\t-v\tDisplay program version and copyright\n"
 	"\t-L\tList supported character sets and encodings\n";
+	"\t-R\tPrint a \"Rosetta stone\" of a phrase in all character sets\n";
 	exit(1);
 }
 
@@ -124,24 +125,18 @@ version()
 	"MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.\n";
 }
 
-char *defsourcecs = "ISO-8859-7";	// Default encodings
-char *deftargetcs = "ISO-8859-7";
-
 filter *
 input_encoding(char *name)
 {
 	if (strcmp(name, "8bit") == 0)
 		return NULL;
-	else if (strcmp(name, "UCS-2") == 0) {
-		defsourcecs = "Unicode";
+	else if (strcmp(name, "UCS-2") == 0)
 		return new ucs2i;
-	} else if (strcmp(name, "UTF-8") == 0) {
-		defsourcecs = "Unicode";
+	else if (strcmp(name, "UTF-8") == 0)
 		return new utf8i;
-	} else if (strcmp(name, "UTF-7") == 0) {
-		defsourcecs = "Unicode";
+	else if (strcmp(name, "UTF-7") == 0)
 		return new utf7i;
-	} else if (strcmp(name, "HTML") == 0)
+	else if (strcmp(name, "HTML") == 0)
 		return new htmli;
 	else if (strcmp(name, "Base64") == 0)
 		return new base64i;
@@ -149,10 +144,9 @@ input_encoding(char *name)
 		return new quotei;
 	else if (strcmp(name, "RTF") == 0)
 		return new rtfi;
-	else if (strcmp(name, "Java") == 0) {
-		defsourcecs = "Unicode";
+	else if (strcmp(name, "Java") == 0)
 		return new javai;
-	} else if (strcmp(name, "HTML-Symbol") == 0)
+	else if (strcmp(name, "HTML-Symbol") == 0)
 		return new lex(lexuhtmls);
 	else if (strcmp(name, "HTML-Lat") == 0)
 		return new lex(lexuhtmll1);
@@ -169,16 +163,13 @@ output_encoding(char *name)
 {
 	if (strcmp(name, "8bit") == 0)
 		return NULL;
-	else if (strcmp(name, "UCS-2") == 0) {
-		deftargetcs = "Unicode";
+	else if (strcmp(name, "UCS-2") == 0)
 		return new ucs2o;
-	} else if (strcmp(name, "UTF-8") == 0) {
-		deftargetcs = "Unicode";
+	else if (strcmp(name, "UTF-8") == 0)
 		return new utf8o;
-	} else if (strcmp(name, "UTF-7") == 0) {
-		deftargetcs = "Unicode";
+	else if (strcmp(name, "UTF-7") == 0)
 		return new utf7o;
-	} else if (strcmp(name, "HTML") == 0)
+	else if (strcmp(name, "HTML") == 0)
 		return new htmlo;
 	else if (strcmp(name, "Base64") == 0)
 		return new base64o;
@@ -186,10 +177,9 @@ output_encoding(char *name)
 		return new quoteo;
 	else if (strcmp(name, "RTF") == 0)
 		return new rtfo;
-	else if (strcmp(name, "Java") == 0) {
-		deftargetcs = "Unicode";
+	else if (strcmp(name, "Java") == 0)
 		return new javao;
-	} else if (strcmp(name, "HTML-Symbol") == 0)
+	else if (strcmp(name, "HTML-Symbol") == 0)
 		return new htmlso;
 	else if (strcmp(name, "HTML-Lat") == 0)
 		return new htmll1o;
@@ -204,7 +194,9 @@ output_encoding(char *name)
 static void
 rosetta()
 {
+	// CP-1253
 	strinput in("¢ëöá, ôï ðñþôï ãñÜììá ôïõ åëëçíéêïý áëöáâÞôïõ.  ÙÌÅÃÁ, ÔÏ ÔÅËÅÕÔÁÉÏ.");
+	// Alfa, to proto gramma tou ellinikou alfabitou.  OMEGA, TO TELEFTAIO.
 	filter *f;			// Current pipeline input
 
 	map *m;
@@ -312,9 +304,9 @@ main(int argc, char *argv[])
 
 	// Apply defaults
 	if (!sourcecs)
-		sourcecs = defsourcecs;
+		sourcecs = ((ienc && ienc->owidth() == 16) ? "Unicode" : "ISO-8859-7");
 	if (!targetcs)
-		targetcs = deftargetcs;
+		targetcs = ((oenc && oenc->iwidth() == 16) ? "Unicode" : "ISO-8859-7");
 
 	if (ienc) {
 		ienc->setinput(f);

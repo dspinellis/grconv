@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: javao.h,v 1.1 2000/03/12 13:26:19 dds Exp $
+ * $Id: javao.h,v 1.2 2000/05/06 19:27:11 dds Exp $
  */
 
 #ifndef JAVAO_
@@ -42,6 +42,7 @@ private:
 		}
 	}
 public:
+	virtual int iwidth() { return (16); };		// Input char width
 	int getcharacter() { return (queue::getcharacter()); };
 };
 #endif
