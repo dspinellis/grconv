@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.9 2000/04/19 10:52:29 dds Exp $
+# $Id: Makefile,v 1.10 2000/04/19 11:00:48 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
@@ -20,6 +20,12 @@ VERSION=1.1
 RELEASE=1
 NAME=grconv-$(VERSION)
 SPEC=$(NAME)-$(RELEASE).spec
+
+# Manual page directory
+MANDIR=/usr/local/man/man1
+
+# Program executable directory
+BINDIR=/usr/local/bin
 
 OBJ=i843.$(O) grconv.$(O) queue.$(O) charset.$(O) chartbl.$(O) getopt.$(O) \
 	map.$(O) translit.$(O) ut843.$(O) error.$(O) utf7o.$(O) utf7i.$(O) \
@@ -118,6 +124,10 @@ clean:
 	rm -f grconv.tar.gz
 	rm -f Makefile.msc
 	rm -f $(SPEC)
+
+install: grconv
+	install -s grconv $(BINDIR)
+	install -m 644 grconv.1 $(MANDIR)
 
 clobber: clean
 	rm -f $(SRC)
