@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.15 2000/05/06 21:39:01 dds Exp $
+# $Id: Makefile,v 1.16 2000/05/06 21:41:58 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
@@ -34,7 +34,7 @@ OBJ=i843.$(O) grconv.$(O) queue.$(O) charset.$(O) chartbl.$(O) getopt.$(O) \
 SRC=base64i.h base64o.h charset.h error.cpp error.h filter.h getopt.cpp \
 	getopt.h grconv.1 grconv.cpp htmli.h htmll1o.cpp htmll1o.h htmlo.h \
 	javai.h javao.h lex.h map.cpp map.h queue.cpp queue.h quotei.h \
-	quoteo.h rtfi.h rtfo.h stdinput.h translit.cpp \
+	quoteo.h rtfi.h rtfo.h stdinput.h strinput.h translit.cpp \
 	translit.h ucs2i.h ucs2o.h unistd.h utf7.cpp \
 	utf7.h utf7i.cpp utf7i.h utf7o.cpp utf7o.h utf8i.h utf8o.h \
 	htmlso.cpp htmlso.h \
