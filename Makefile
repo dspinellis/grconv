@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.1 2000/03/12 12:26:19 dds Exp $
+# $Id: Makefile,v 1.2 2000/03/12 12:30:54 dds Exp $
 #
 
 OBJ=lexi843.$(O) grconv.$(O) queue.$(O) charset.$(O) chartbl.$(O) getopt.$(O) \
@@ -115,9 +115,11 @@ grconv.html: grconv.1
 clean:
 	rm -f lexi843.cpp lexuhtmll1.cpp lexut843.cpp
 	rm -f charset.cpp chartbl.cpp chartbl.h
-	rm -f *.$(O) grconv$(EXE)
+	rm -f *.o *.obj grconv.exe grconv
 	rm -f $(DOC)
 	rm -f *.pdb
+	rm -f *.rpm
+	rm -f grconv.tar.gz
 
 grconv.tar.gz: $(SRC)
 	tar cvfz grconv.tar.gz $(SRC)
@@ -137,4 +139,4 @@ lf:
 	perl -pi -e 's/\r//' $(SRC)
 
 ci:
-	ci -i $(SRC)
+	ci -u $(SRC)
