@@ -1,7 +1,7 @@
 Summary: universal Greek character code converter
 Name: grconv
-Version: 1.0
-Release: 1
+Version: X.X
+Release: X
 Copyright: BSD
 Group: Utilities/Text
 Source: grconv.tar.gz
