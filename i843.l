@@ -12,7 +12,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: i843.l,v 1.3 2000/03/18 17:20:23 dds Exp $
+ * $Id: i843.l,v 1.4 2003/04/01 18:15:50 dds Exp $
  */
 
 /* Redefine these values for stressed output */
@@ -158,7 +158,7 @@ NOGREEK	[^áÜâãäåİæçŞèéßúÀêëìíîïüğñóôõıûàö÷øùşÁ¢ÂÃÄÅ¸ÆÇ¹ÈÉºÚÊËÌÍÎÏ¼ĞÑÓÔÕ¾ÛÖ×ØÙ¿]
 çı/{NOTE4}	{ l->nq(stress_i); l->nq('f'); return; }
 Çı/{NOTE4}	{ l->nq(stress_I); l->nq('f'); return; }
 Ç¾/{NOTE4}	{ l->nq(stress_I); l->nq('F'); return; }
-ç¾/{NOTE4}	{ l->nq(stress_i); l->nq('f'); return; }
+ç¾/{NOTE4}	{ l->nq(stress_i); l->nq('F'); return; }
 
 È		{ l->nq('T'); l->nq('H'); return; }
 è		{ l->nq('t'); l->nq('h'); return; }
