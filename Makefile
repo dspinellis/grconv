@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.8 2000/03/18 18:22:24 dds Exp $
+# $Id: Makefile,v 1.9 2000/04/19 10:52:29 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
@@ -23,7 +23,7 @@ SPEC=$(NAME)-$(RELEASE).spec
 
 OBJ=i843.$(O) grconv.$(O) queue.$(O) charset.$(O) chartbl.$(O) getopt.$(O) \
 	map.$(O) translit.$(O) ut843.$(O) error.$(O) utf7o.$(O) utf7i.$(O) \
-	utf7.$(O) htmll1o.$(O) uhtmll1.$(O)
+	utf7.$(O) htmll1o.$(O) uhtmll1.$(O) htmlso.$(O) uhtmls.$(O)
 
 SRC=base64i.h base64o.h charset.h error.cpp error.h filter.h getopt.cpp \
 	getopt.h grconv.1 grconv.cpp htmli.h htmll1o.cpp htmll1o.h htmlo.h \
@@ -31,7 +31,8 @@ SRC=base64i.h base64o.h charset.h error.cpp error.h filter.h getopt.cpp \
 	quoteo.h rtfi.h rtfo.h stdinput.h translit.cpp \
 	translit.h ucs2i.h ucs2o.h unistd.h utf7.cpp \
 	utf7.h utf7i.cpp utf7i.h utf7o.cpp utf7o.h utf8i.h utf8o.h \
-	i843.l uhtmll1.l ut843.l \
+	htmlso.cpp htmlso.h \
+	i843.l uhtmls.l uhtmll1.l ut843.l \
 	mkc.pl rfc1345.txt defacto.txt Makefile grconv.spec index.html
 
 DOC=grconv.txt grconv.ps grconv.pdf grconv.html
@@ -108,11 +109,11 @@ grconv.html: grconv.1
 	man2html $^ | sed '1d;s,<A HREF="http.*</A>,,;s/^,$$/man2html,/' > $@
 
 clean:
-	rm -f i843.cpp uhtmll1.cpp ut843.cpp
+	rm -f i843.cpp uhtmll1.cpp uhtmls.cpp ut843.cpp
 	rm -f charset.cpp chartbl.cpp chartbl.h
 	rm -f *.o *.obj grconv.exe grconv
 	rm -f $(DOC)
-	rm -f *.pdb
+	rm -f *.pdb core
 	rm -f *.rpm
 	rm -f grconv.tar.gz
 	rm -f Makefile.msc

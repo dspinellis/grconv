@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: grconv.cpp,v 1.3 2000/03/12 13:13:16 dds Exp $
+ * $Id: grconv.cpp,v 1.4 2000/04/19 10:52:29 dds Exp $
  */
 
 #include <stdlib.h>
@@ -32,6 +32,7 @@
 #include "utf8o.h"
 #include "utf7o.h"
 #include "htmll1o.h"
+#include "htmlso.h"
 #include "htmlo.h"
 #include "javao.h"
 #include "base64o.h"
@@ -54,6 +55,7 @@
 void lexi843(lex *l);
 void lexut843(lex *l);
 void lexuhtmll1(lex *l);
+void lexuhtmls(lex *l);
 
 void
 usage()
@@ -82,7 +84,7 @@ encodings()
 {
 	cout << "Valid input/output encodings are:\n"
 		"\tFor Unicode data: UCS-2 UTF-8 UTF-7 Java HTML\n"
-		"\tFor 8-bit data: 8bit Base64 Quoted RTF HTML HTML-Lat\n"
+		"\tFor 8-bit data: 8bit Base64 Quoted RTF HTML HTML-Symbol HTML-Lat\n"
 	"Valid character sets are:\n";
 	int margin=0;
 	for (struct s_charset *cp = charsets; cp->name; cp++) {
@@ -171,6 +173,8 @@ main(int argc, char *argv[])
 				ienc = new rtfi;
 			else if (strcmp(optarg, "Java") == 0)
 				ienc = new javai;
+			else if (strcmp(optarg, "HTML-Symbol") == 0)
+				ienc = new lex(lexuhtmls);
 			else if (strcmp(optarg, "HTML-Lat") == 0)
 				ienc = new lex(lexuhtmll1);
 			else {
@@ -202,6 +206,8 @@ main(int argc, char *argv[])
 				oenc = new rtfo;
 			else if (strcmp(optarg, "Java") == 0)
 				oenc = new javao;
+			else if (strcmp(optarg, "HTML-Symbol") == 0)
+				oenc = new htmlso;
 			else if (strcmp(optarg, "HTML-Lat") == 0)
 				oenc = new htmll1o;
 			else {
