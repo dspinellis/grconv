@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: map.cpp,v 1.3 2000/05/06 20:17:08 dds Exp $
+ * $Id: map.cpp,v 1.4 2000/05/06 20:21:48 dds Exp $
  */
 
 #include <cstdlib>
@@ -41,6 +41,13 @@ cecompare(const struct s_charentry *a, const struct s_charentry *b)
 {
 	return (a->unicode - b->unicode);
 }
+
+bool
+is_unicode(struct s_charset *cs)
+{
+	return (cs->count > 1000);		// Must be Unicode
+}
+
 
 void encodings();
 
@@ -86,7 +93,7 @@ map::map(char *in, char *out, char def)
 		else
 			unmap++;
 	}
-	if (outp->count > 1000)		// Must be Unicode
+	if (is_unicode(outp))
 		ocs = "UNICODE-1-1";
 	else
 		ocs = outp->name;

@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: map.h,v 1.1 2000/03/12 13:26:19 dds Exp $
+ * $Id: map.h,v 1.2 2000/05/06 20:21:48 dds Exp $
  */
 
 #ifndef MAP_
@@ -30,4 +30,7 @@ public:
 	int getcharacter();
 	char *outputcs();
 };
+
+struct s_charset * cs_find(char *name);
+bool is_unicode(struct s_charset *cs);
 #endif
