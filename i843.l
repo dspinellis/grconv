@@ -1,10 +1,20 @@
-NOTE3	[âãäæëìíñáÜåÝçÞéßïüõýùþÂÃÄÆËÌÍÑÁ¢Å¸Ç¹ÉºÏ¼Õ¾Ù¿]
-NOTE4	[^âãäæëìíñáÜåÝçÞéßïüõýùþÂÃÄÆËÌÍÑÁ¢Å¸Ç¹ÉºÏ¼Õ¾Ù¿]
-GRLCASE	[áÜâãäåÝæçÞèéßúêëìíîïüðñóôõýûö÷øùþ]
-GRUCASE	[Á¢ÂÃÄÅ¸ÆÇ¹ÈÉºÚÊËÌÍÎÏ¼ÐÑÓÔÕ¾ÛÖ×ØÙ¿]
-NOGREEK	[^áÜâãäåÝæçÞèéßúêëìíîïüðñóôõýûö÷øùþÁ¢ÂÃÄÅ¸ÆÇ¹ÈÉºÚÊËÌÍÎÏ¼ÐÑÓÔÕ¾ÛÖ×ØÙ¿]
-
 %{
+/* 
+ * (C) Copyright 2000 Diomidis Spinellis.
+ * 
+ * Permission to use, copy, and distribute this software and its
+ * documentation for any purpose and without fee is hereby granted,
+ * provided that the above copyright notice appear in all copies and that
+ * both that copyright notice and this permission notice appear in
+ * supporting documentation.
+ * 
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * $Id: i843.l,v 1.2 2000/03/12 13:12:18 dds Exp $
+ */
+
 /* Redefine these values for stressed output */
 	char stress_a = 'a';
 	char stress_A = 'A';
@@ -24,229 +34,232 @@ NOGREEK	[^áÜâãäåÝæçÞèéßúêëìíîïüðñóôõýûö÷øùþÁ¢ÂÃÄÅ¸ÆÇ¹ÈÉºÚÊËÌÍÎÏ¼ÐÑÓÔÕ¾ÛÖ×ØÙ¿]
 	char diair_y = 'y';
 	char diair_Y = 'Y';
 
+#include "filter.h"
+#include "queue.h"
+#include "lex.h"
+
+// This makes the lexer non-reentrant
+// It is needed by YY_INPUT which is not called from yylex
+static lex *thislex;
+
+#define YY_DECL void lexi843(lex *l)
+#define YY_USER_INIT thislex = l;
+
 #define YY_INPUT(buf,result,max_size) \
 { \
-	int i; \
-        if ( yy_current_buffer->yy_is_interactive ) \
-                { \
-                int c = '*', n; \
-                for ( n = 0; n < max_size && \
-                             (c = getc( yyin )) != EOF && c != '\n'; ++n ) \
-                        buf[n] = (char) c; \
-                if ( c == '\n' ) \
-                        buf[n++] = (char) c; \
-                if ( c == EOF && ferror( yyin ) ) \
-                        YY_FATAL_ERROR( "input in flex scanner failed" ); \
-                result = n; \
-                } \
-        else if ( ((result = fread( buf, 1, max_size, yyin )) == 0) \
-                  && ferror( yyin ) ) \
-                YY_FATAL_ERROR( "input in flex scanner failed" ); \
-	for (i = 0; i < result; i++) \
-		buf[i] = map[(unsigned char)buf[i]]; \
-} \
+	int c = thislex->getinputcharacter(); \
+	result = (c == EOF) ? YY_NULL : (buf[0] = c, 1); \
+}
 
 #define yyterminate() return 
-#define YY_DECL void lexi843(int *q, int *qlen)
-#define nq(x) (q[*qlen] = (x), *qlen++)
 
 %}
 
+NOTE3	[âãäæëìíñáÜåÝçÞéßúÀïüõýûàùþÂÃÄÆËÌÍÑÁ¢Å¸Ç¹ÉºÏ¼Õ¾Ù¿]
+NOTE4	[^âãäæëìíñáÜåÝçÞéßúÀïüõýûàùþÂÃÄÆËÌÍÑÁ¢Å¸Ç¹ÉºÏ¼Õ¾Ù¿]
+GRLCASE	[áÜâãäåÝæçÞèéßúÀêëìíîïüðñóôõýûàö÷øùþ]
+GRUCASE	[Á¢ÂÃÄÅ¸ÆÇ¹ÈÉºÚÊËÌÍÎÏ¼ÐÑÓÔÕ¾ÛÖ×ØÙ¿]
+NOGREEK	[^áÜâãäåÝæçÞèéßúÀêëìíîïüðñóôõýûàö÷øùþÁ¢ÂÃÄÅ¸ÆÇ¹ÈÉºÚÊËÌÍÎÏ¼ÐÑÓÔÕ¾ÛÖ×ØÙ¿]
+
 
 %%
 
-á		{ nq('a'); return; }
-Ü		{ nq(stress_a); return; }
-Á		{ nq('A'); return; }
-¢		{ nq(stress_A); return; }
+á		{ l->nq('a'); return; }
+Ü		{ l->nq(stress_a); return; }
+Á		{ l->nq('A'); return; }
+¢		{ l->nq(stress_A); return; }
 
-áõ/{NOTE3}	{ nq('a'); nq('v'); return; }
-Áõ/{NOTE3}	{ nq('A'); nq('v'); return; }
-ÁÕ/{NOTE3}	{ nq('A'); nq('V'); return; }
-áÕ/{NOTE3}	{ nq('a'); nq('V'); return; }
-áõ/{NOTE4}	{ nq('a'); nq('f'); return; }
-Áõ/{NOTE4}	{ nq('A'); nq('f'); return; }
-ÁÕ/{NOTE4}	{ nq('A'); nq('F'); return; }
-áÕ/{NOTE4}	{ nq('a'); nq('F'); return; }
+áõ/{NOTE3}	{ l->nq('a'); l->nq('v'); return; }
+Áõ/{NOTE3}	{ l->nq('A'); l->nq('v'); return; }
+ÁÕ/{NOTE3}	{ l->nq('A'); l->nq('V'); return; }
+áÕ/{NOTE3}	{ l->nq('a'); l->nq('V'); return; }
+áõ/{NOTE4}	{ l->nq('a'); l->nq('f'); return; }
+Áõ/{NOTE4}	{ l->nq('A'); l->nq('f'); return; }
+ÁÕ/{NOTE4}	{ l->nq('A'); l->nq('F'); return; }
+áÕ/{NOTE4}	{ l->nq('a'); l->nq('F'); return; }
 
-áý/{NOTE3}	{ nq(stress_a); nq('v'); return; /* Note 10 */ }
-Áý/{NOTE3}	{ nq(stress_A); nq('v'); return; }
-Á¾/{NOTE3}	{ nq(stress_A); nq('V'); return; }
-á¾/{NOTE3}	{ nq(stress_a); nq('V'); return; }
-áý/{NOTE4}	{ nq(stress_a); nq('f'); return; }
-Áý/{NOTE4}	{ nq(stress_A); nq('f'); return; }
-Á¾/{NOTE4}	{ nq(stress_A); nq('F'); return; }
-á¾/{NOTE4}	{ nq(stress_a); nq('f'); return; }
+áý/{NOTE3}	{ l->nq(stress_a); l->nq('v'); return; /* Note 10 */ }
+Áý/{NOTE3}	{ l->nq(stress_A); l->nq('v'); return; }
+Á¾/{NOTE3}	{ l->nq(stress_A); l->nq('V'); return; }
+á¾/{NOTE3}	{ l->nq(stress_a); l->nq('V'); return; }
+áý/{NOTE4}	{ l->nq(stress_a); l->nq('f'); return; }
+Áý/{NOTE4}	{ l->nq(stress_A); l->nq('f'); return; }
+Á¾/{NOTE4}	{ l->nq(stress_A); l->nq('F'); return; }
+á¾/{NOTE4}	{ l->nq(stress_a); l->nq('f'); return; }
 
-â		{ nq('b'); return; }
-Â		{ nq('B'); return; }
+â		{ l->nq('b'); return; }
+Â		{ l->nq('B'); return; }
 
-ã		{ nq('g'); return; }
-Ã		{ nq('G'); return; }
+ã		{ l->nq('g'); return; }
+Ã		{ l->nq('G'); return; }
 
-ãã		{ nq('n'); nq('g'); return; }
-ãÃ		{ nq('n'); nq('G'); return; }
-Ãã		{ nq('N'); nq('g'); return; }
-ÃÃ		{ nq('N'); nq('G'); return; }
+ãã		{ l->nq('n'); l->nq('g'); return; }
+ãÃ		{ l->nq('n'); l->nq('G'); return; }
+Ãã		{ l->nq('N'); l->nq('g'); return; }
+ÃÃ		{ l->nq('N'); l->nq('G'); return; }
 
-ãî		{ nq('n'); nq('x'); return; }
-ãÎ		{ nq('n'); nq('X'); return; }
-Ãî		{ nq('N'); nq('x'); return; }
-ÃÎ		{ nq('N'); nq('X'); return; }
+ãî		{ l->nq('n'); l->nq('x'); return; }
+ãÎ		{ l->nq('n'); l->nq('X'); return; }
+Ãî		{ l->nq('N'); l->nq('x'); return; }
+ÃÎ		{ l->nq('N'); l->nq('X'); return; }
 
-ã÷		{ nq('n'); nq('c'); nq('h'); return; }
-ã×		{ nq('n'); nq('C'); nq('H'); return; }
-Ã÷		{ nq('N'); nq('c'); nq('h'); return; }
-Ã×		{ nq('N'); nq('C'); nq('H'); return; }
+ã÷		{ l->nq('n'); l->nq('c'); l->nq('h'); return; }
+ã×		{ l->nq('n'); l->nq('C'); l->nq('H'); return; }
+Ã÷		{ l->nq('N'); l->nq('c'); l->nq('h'); return; }
+Ã×		{ l->nq('N'); l->nq('C'); l->nq('H'); return; }
 
-ä		{ nq('d'); return; }
-Ä		{ nq('D'); return; }
+ä		{ l->nq('d'); return; }
+Ä		{ l->nq('D'); return; }
 
-å		{ nq('e'); return; }
-Å		{ nq('E'); return; }
-Ý		{ nq(stress_e); return; }
-¸		{ nq(stress_E); return; }
+å		{ l->nq('e'); return; }
+Å		{ l->nq('E'); return; }
+Ý		{ l->nq(stress_e); return; }
+¸		{ l->nq(stress_E); return; }
 
-åõ/{NOTE3}	{ nq('e'); nq('v'); return; }
-Åõ/{NOTE3}	{ nq('E'); nq('v'); return; }
-ÅÕ/{NOTE3}	{ nq('E'); nq('V'); return; }
-åÕ/{NOTE3}	{ nq('e'); nq('V'); return; }
-åõ/{NOTE4}	{ nq('e'); nq('f'); return; }
-Åõ/{NOTE4}	{ nq('E'); nq('f'); return; }
-ÅÕ/{NOTE4}	{ nq('E'); nq('F'); return; }
-åÕ/{NOTE4}	{ nq('e'); nq('F'); return; }
+åõ/{NOTE3}	{ l->nq('e'); l->nq('v'); return; }
+Åõ/{NOTE3}	{ l->nq('E'); l->nq('v'); return; }
+ÅÕ/{NOTE3}	{ l->nq('E'); l->nq('V'); return; }
+åÕ/{NOTE3}	{ l->nq('e'); l->nq('V'); return; }
+åõ/{NOTE4}	{ l->nq('e'); l->nq('f'); return; }
+Åõ/{NOTE4}	{ l->nq('E'); l->nq('f'); return; }
+ÅÕ/{NOTE4}	{ l->nq('E'); l->nq('F'); return; }
+åÕ/{NOTE4}	{ l->nq('e'); l->nq('F'); return; }
 
-åý/{NOTE3}	{ nq(stress_e); nq('v'); return; /* Note 10 */ }
-Åý/{NOTE3}	{ nq(stress_E); nq('v'); return; }
-Å¾/{NOTE3}	{ nq(stress_E); nq('V'); return; }
-å¾/{NOTE3}	{ nq(stress_e); nq('V'); return; }
-åý/{NOTE4}	{ nq(stress_e); nq('f'); return; }
-Åý/{NOTE4}	{ nq(stress_E); nq('f'); return; }
-Å¾/{NOTE4}	{ nq(stress_E); nq('F'); return; }
-å¾/{NOTE4}	{ nq(stress_e); nq('f'); return; }
+åý/{NOTE3}	{ l->nq(stress_e); l->nq('v'); return; /* Note 10 */ }
+Åý/{NOTE3}	{ l->nq(stress_E); l->nq('v'); return; }
+Å¾/{NOTE3}	{ l->nq(stress_E); l->nq('V'); return; }
+å¾/{NOTE3}	{ l->nq(stress_e); l->nq('V'); return; }
+åý/{NOTE4}	{ l->nq(stress_e); l->nq('f'); return; }
+Åý/{NOTE4}	{ l->nq(stress_E); l->nq('f'); return; }
+Å¾/{NOTE4}	{ l->nq(stress_E); l->nq('F'); return; }
+å¾/{NOTE4}	{ l->nq(stress_e); l->nq('f'); return; }
 
-æ		{ nq('z'); return; }
-Æ		{ nq('Z'); return; }
+æ		{ l->nq('z'); return; }
+Æ		{ l->nq('Z'); return; }
 
-ç		{ nq('i'); return; }
-Ç		{ nq('I'); return; }
-Þ		{ nq(stress_i); return; }
-¹		{ nq(stress_I); return; }
+ç		{ l->nq('i'); return; }
+Ç		{ l->nq('I'); return; }
+Þ		{ l->nq(stress_i); return; }
+¹		{ l->nq(stress_I); return; }
 
-çõ/{NOTE3}	{ nq('i'); nq('v'); return; }
-Çõ/{NOTE3}	{ nq('E'); nq('v'); return; }
-ÇÕ/{NOTE3}	{ nq('E'); nq('V'); return; }
-çÕ/{NOTE3}	{ nq('i'); nq('V'); return; }
-çõ/{NOTE4}	{ nq('i'); nq('f'); return; }
-Çõ/{NOTE4}	{ nq('E'); nq('f'); return; }
-ÇÕ/{NOTE4}	{ nq('E'); nq('F'); return; }
-çÕ/{NOTE4}	{ nq('i'); nq('F'); return; }
+çõ/{NOTE3}	{ l->nq('i'); l->nq('v'); return; }
+Çõ/{NOTE3}	{ l->nq('E'); l->nq('v'); return; }
+ÇÕ/{NOTE3}	{ l->nq('E'); l->nq('V'); return; }
+çÕ/{NOTE3}	{ l->nq('i'); l->nq('V'); return; }
+çõ/{NOTE4}	{ l->nq('i'); l->nq('f'); return; }
+Çõ/{NOTE4}	{ l->nq('E'); l->nq('f'); return; }
+ÇÕ/{NOTE4}	{ l->nq('E'); l->nq('F'); return; }
+çÕ/{NOTE4}	{ l->nq('i'); l->nq('F'); return; }
 
-çý/{NOTE3}	{ nq(stress_i); nq('v'); return; /* Note 10 */ }
-Çý/{NOTE3}	{ nq(stress_I); nq('v'); return; }
-Ç¾/{NOTE3}	{ nq(stress_I); nq('V'); return; }
-ç¾/{NOTE3}	{ nq(stress_i); nq('V'); return; }
-çý/{NOTE4}	{ nq(stress_i); nq('f'); return; }
-Çý/{NOTE4}	{ nq(stress_I); nq('f'); return; }
-Ç¾/{NOTE4}	{ nq(stress_I); nq('F'); return; }
-ç¾/{NOTE4}	{ nq(stress_i); nq('f'); return; }
+çý/{NOTE3}	{ l->nq(stress_i); l->nq('v'); return; /* Note 10 */ }
+Çý/{NOTE3}	{ l->nq(stress_I); l->nq('v'); return; }
+Ç¾/{NOTE3}	{ l->nq(stress_I); l->nq('V'); return; }
+ç¾/{NOTE3}	{ l->nq(stress_i); l->nq('V'); return; }
+çý/{NOTE4}	{ l->nq(stress_i); l->nq('f'); return; }
+Çý/{NOTE4}	{ l->nq(stress_I); l->nq('f'); return; }
+Ç¾/{NOTE4}	{ l->nq(stress_I); l->nq('F'); return; }
+ç¾/{NOTE4}	{ l->nq(stress_i); l->nq('f'); return; }
 
-È		{ nq('T'); nq('H'); return; }
-è		{ nq('t'); nq('h'); return; }
-È/{GRLCASE}	{ nq('T'); nq('h'); return; /* Note 11 */}
+È		{ l->nq('T'); l->nq('H'); return; }
+è		{ l->nq('t'); l->nq('h'); return; }
+È/{GRLCASE}	{ l->nq('T'); l->nq('h'); return; /* Note 11 */}
 
-é		{ nq('i'); return; }
-É		{ nq('I'); return; }
-ß		{ nq(stress_i); return; }
-º		{ nq(stress_I); return; }
-ú		{ nq(diair_i); return; }
-Ú		{ nq(diair_I); return; }
+é		{ l->nq('i'); return; }
+ß		{ l->nq(stress_i); return; }
+ú		{ l->nq(diair_i); return; }
+À		{ l->nq(stress_i); return; }
+É		{ l->nq('I'); return; }
+º		{ l->nq(stress_I); return; }
+Ú		{ l->nq(diair_I); return; }
 
-ê		{ nq('k'); return; }
-Ê		{ nq('K'); return; }
+ê		{ l->nq('k'); return; }
+Ê		{ l->nq('K'); return; }
 
-ë		{ nq('l'); return; }
-Ë		{ nq('L'); return; }
+ë		{ l->nq('l'); return; }
+Ë		{ l->nq('L'); return; }
 
-ì		{ nq('m'); return; }
-Ì		{ nq('M'); return; }
+ì		{ l->nq('m'); return; }
+Ì		{ l->nq('M'); return; }
 
-{NOGREEK}ìð	{ nq(*yytext); nq('b'); return; /* Note 5 */ }
-{NOGREEK}Ìð	{ nq(*yytext); nq('B'); return; }
-{NOGREEK}ìÐ	{ nq(*yytext); nq('b'); return; }
-{NOGREEK}ÌÐ	{ nq(*yytext); nq('B'); return; }
-^ìð		{ nq('b'); return; }
-^Ìð		{ nq('B'); return; }
-^ìÐ		{ nq('b'); return; }
-^ÌÐ		{ nq('B'); return; }
+{NOGREEK}ìð	{ l->nq(*yytext); l->nq('b'); return; /* Note 5 */ }
+{NOGREEK}Ìð	{ l->nq(*yytext); l->nq('B'); return; }
+{NOGREEK}ìÐ	{ l->nq(*yytext); l->nq('b'); return; }
+{NOGREEK}ÌÐ	{ l->nq(*yytext); l->nq('B'); return; }
+^ìð		{ l->nq('b'); return; }
+^Ìð		{ l->nq('B'); return; }
+^ìÐ		{ l->nq('b'); return; }
+^ÌÐ		{ l->nq('B'); return; }
 
-ìð/{NOGREEK}	{ nq('b'); return; /* Note 7 */ }
-Ìð/{NOGREEK}	{ nq('B'); return; }
-ìÐ/{NOGREEK}	{ nq('b'); return; }
-ÌÐ/{NOGREEK}	{ nq('B'); return; }
+ìð/{NOGREEK}	{ l->nq('b'); return; /* Note 7 */ }
+Ìð/{NOGREEK}	{ l->nq('B'); return; }
+ìÐ/{NOGREEK}	{ l->nq('b'); return; }
+ÌÐ/{NOGREEK}	{ l->nq('B'); return; }
 
-í		{ nq('n'); return; }
-Í		{ nq('N'); return; }
+í		{ l->nq('n'); return; }
+Í		{ l->nq('N'); return; }
 
-Î		{ nq('X'); return; }
-î		{ nq('x'); return; }
+Î		{ l->nq('X'); return; }
+î		{ l->nq('x'); return; }
 
 
-ï		{ nq('o'); return; }
-Ï		{ nq('O'); return; }
-ü		{ nq(stress_o); return; }
-¼		{ nq(stress_O); return; }
+ï		{ l->nq('o'); return; }
+Ï		{ l->nq('O'); return; }
+ü		{ l->nq(stress_o); return; }
+¼		{ l->nq(stress_O); return; }
 
-ïõ		{ nq('o'); nq('u'); return; }
-Ïõ		{ nq('O'); nq('u'); return; }
-ïÕ		{ nq('o'); nq('U'); return; }
-ÏÕ		{ nq('O'); nq('U'); return; }
+ïõ		{ l->nq('o'); l->nq('u'); return; }
+Ïõ		{ l->nq('O'); l->nq('u'); return; }
+ïÕ		{ l->nq('o'); l->nq('U'); return; }
+ÏÕ		{ l->nq('O'); l->nq('U'); return; }
 
-ïý		{ nq('o'); nq(stress_u); return; }
-Ïý		{ nq('O'); nq(stress_u); return; }
-ï¾		{ nq('o'); nq(stress_U); return; }
-Ï¾		{ nq('O'); nq(stress_U); return; }
+ïý		{ l->nq('o'); l->nq(stress_u); return; }
+Ïý		{ l->nq('O'); l->nq(stress_u); return; }
+ï¾		{ l->nq('o'); l->nq(stress_U); return; }
+Ï¾		{ l->nq('O'); l->nq(stress_U); return; }
 
-ð		{ nq('p'); return; }
-Ð		{ nq('P'); return; }
+ð		{ l->nq('p'); return; }
+Ð		{ l->nq('P'); return; }
 
-ñ		{ nq('r'); return; }
-Ñ		{ nq('R'); return; }
+ñ		{ l->nq('r'); return; }
+Ñ		{ l->nq('R'); return; }
 
-ó		{ nq('s'); return; }
-ò		{ nq('s'); return; }
-Ó		{ nq('S'); return; }
+ó		{ l->nq('s'); return; }
+ò		{ l->nq('s'); return; }
+Ó		{ l->nq('S'); return; }
 
-ô		{ nq('t'); return; }
-Ô		{ nq('T'); return; }
+ô		{ l->nq('t'); return; }
+Ô		{ l->nq('T'); return; }
 
-õ		{ nq('y'); return; }
-Õ		{ nq('Y'); return; }
-ý		{ nq(stress_y); return; }
-¾		{ nq(stress_Y); return; }
+õ		{ l->nq('y'); return; }
+Õ		{ l->nq('Y'); return; }
+ý		{ l->nq(stress_y); return; }
+û		{ l->nq(diair_y); return; }
+à		{ l->nq(stress_y); return; }
+¾		{ l->nq(stress_Y); return; }
+Û		{ l->nq(diair_Y); return; }
 
-ö		{ nq('f'); return; }
-Ö		{ nq('F'); return; }
+ö		{ l->nq('f'); return; }
+Ö		{ l->nq('F'); return; }
 
-÷		{ nq('c'); nq('h'); return; }
-×		{ nq('C'); nq('H'); return; }
-×/{GRLCASE}	{ nq('C'); nq('h'); return; /* Note 11 */}
+÷		{ l->nq('c'); l->nq('h'); return; }
+×		{ l->nq('C'); l->nq('H'); return; }
+×/{GRLCASE}	{ l->nq('C'); l->nq('h'); return; /* Note 11 */}
 
-ø		{ nq('p'); nq('s'); return; }
-Ø		{ nq('P'); nq('S'); return; }
-Ø/{GRLCASE}	{ nq('P'); nq('s'); return; /* Note 11 */}
+ø		{ l->nq('p'); l->nq('s'); return; }
+Ø		{ l->nq('P'); l->nq('S'); return; }
+Ø/{GRLCASE}	{ l->nq('P'); l->nq('s'); return; /* Note 11 */}
 
-ù		{ nq('o'); return; }
-Ù		{ nq('O'); return; }
-þ		{ nq(stress_o); return; }
-¿		{ nq(stress_O); return; }
+ù		{ l->nq('o'); return; }
+Ù		{ l->nq('O'); return; }
+þ		{ l->nq(stress_o); return; }
+¿		{ l->nq(stress_O); return; }
+
+.		{ l->nq(*yytext); return; }
+\n		{ l->nq('\n'); return; }
+
+<<EOF>>		{ l->nq(EOF); return; }
 
 %%
-
-main()
-{
-	yylex();
-}
 
 yywrap()
 {
