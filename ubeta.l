@@ -12,7 +12,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ubeta.l,v 1.1 2001/02/13 08:18:54 dds Exp $
+ * $Id: ubeta.l,v 1.2 2001/02/13 08:36:56 dds Exp $
  */
 
 
@@ -37,7 +37,7 @@ static lex *thislex;
 
 %}
 
-STRESS		(\/|\\|=|\(\/|\(\\|\(=|\)\/|\)\\|\)=|=\||\/\|\\\|)
+STRESS		(\/|\\|=|\(\/|\(\\|\(=|\)\/|\)\\|\)=|=\||\/\||\\\|)
 NOSTRESS	(\(|\)|\|)?
 
 
@@ -66,6 +66,7 @@ NOSTRESS	(\(|\)|\|)?
 \*O{NOSTRESS}	{ l->nq((unsigned char)'Ï'); return; }
 \*P		{ l->nq((unsigned char)'Ğ'); return; }
 \*Q		{ l->nq((unsigned char)'È'); return; }
+\*R\(		{ l->nq((unsigned char)'Ñ'); return; }
 \*R		{ l->nq((unsigned char)'Ñ'); return; }
 \*S		{ l->nq((unsigned char)'Ó'); return; }
 \*T		{ l->nq((unsigned char)'Ô'); return; }
@@ -102,6 +103,7 @@ O{STRESS}	{ l->nq((unsigned char)'ü'); return; }
 O{NOSTRESS}	{ l->nq((unsigned char)'ï'); return; }
 P		{ l->nq((unsigned char)'ğ'); return; }
 Q		{ l->nq((unsigned char)'è'); return; }
+R\(		{ l->nq((unsigned char)'ñ'); return; }
 R		{ l->nq((unsigned char)'ñ'); return; }
 S/[^A-Za-z*]	{ l->nq((unsigned char)'ò'); return; }
 S$		{ l->nq((unsigned char)'ò'); return; }
