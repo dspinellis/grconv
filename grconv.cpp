@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: grconv.cpp,v 1.5 2000/04/20 09:33:21 dds Exp $
+ * $Id: grconv.cpp,v 1.6 2000/05/06 14:40:31 dds Exp $
  */
 
 #include <stdlib.h>
@@ -23,6 +23,7 @@
 #include "queue.h"
 
 #include "stdinput.h"
+#include "strinput.h"
 #include "lex.h"
 #include "map.h"
 #include "translit.h"
@@ -56,6 +57,11 @@ void lexi843(lex *l);
 void lexut843(lex *l);
 void lexuhtmll1(lex *l);
 void lexuhtmls(lex *l);
+
+char *encoding_names[] = {
+	"UCS-2", "UTF-8", "UTF-7", "Java", "HTML", 
+	"8bit", "Base64", "Quoted", "RTF", "HTML-Symbol", "HTML-Lat",
+};
 
 void
 usage()
@@ -118,16 +124,115 @@ version()
 	"MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.\n";
 }
 
+char *defsourcecs = "ISO-8859-7";	// Default encodings
+char *deftargetcs = "ISO-8859-7";
+
+filter *
+input_encoding(char *name)
+{
+	if (strcmp(name, "8bit") == 0)
+		return NULL;
+	else if (strcmp(name, "UCS-2") == 0) {
+		defsourcecs = "Unicode";
+		return new ucs2i;
+	} else if (strcmp(name, "UTF-8") == 0) {
+		defsourcecs = "Unicode";
+		return new utf8i;
+	} else if (strcmp(name, "UTF-7") == 0) {
+		defsourcecs = "Unicode";
+		return new utf7i;
+	} else if (strcmp(name, "HTML") == 0)
+		return new htmli;
+	else if (strcmp(name, "Base64") == 0)
+		return new base64i;
+	else if (strcmp(name, "Quoted") == 0)
+		return new quotei;
+	else if (strcmp(name, "RTF") == 0)
+		return new rtfi;
+	else if (strcmp(name, "Java") == 0) {
+		defsourcecs = "Unicode";
+		return new javai;
+	} else if (strcmp(name, "HTML-Symbol") == 0)
+		return new lex(lexuhtmls);
+	else if (strcmp(name, "HTML-Lat") == 0)
+		return new lex(lexuhtmll1);
+	else {
+		error("Unknown -S source encoding ");
+		cerr << name << "\n";
+		usage();
+		return NULL;
+	}
+}
+
+filter *
+output_encoding(char *name)
+{
+	if (strcmp(name, "8bit") == 0)
+		return NULL;
+	else if (strcmp(name, "UCS-2") == 0) {
+		deftargetcs = "Unicode";
+		return new ucs2o;
+	} else if (strcmp(name, "UTF-8") == 0) {
+		deftargetcs = "Unicode";
+		return new utf8o;
+	} else if (strcmp(name, "UTF-7") == 0) {
+		deftargetcs = "Unicode";
+		return new utf7o;
+	} else if (strcmp(name, "HTML") == 0)
+		return new htmlo;
+	else if (strcmp(name, "Base64") == 0)
+		return new base64o;
+	else if (strcmp(name, "Quoted") == 0)
+		return new quoteo;
+	else if (strcmp(name, "RTF") == 0)
+		return new rtfo;
+	else if (strcmp(name, "Java") == 0) {
+		deftargetcs = "Unicode";
+		return new javao;
+	} else if (strcmp(name, "HTML-Symbol") == 0)
+		return new htmlso;
+	else if (strcmp(name, "HTML-Lat") == 0)
+		return new htmll1o;
+	else {
+		error("Unknown -T target encoding ");
+		cerr << name << "\n";
+		usage();
+		return NULL;
+	}
+}
+
+static void
+rosetta()
+{
+	strinput in("¢ëöá, ôï ðñþôï ãñÜììá ôïõ åëëçíéêïý áëöáâÞôïõ.  ÙÌÅÃÁ, ÔÏ ÔÅËÅÕÔÁÉÏ.");
+	filter *f;			// Current pipeline input
+
+	map *m;
+	for (struct s_charset *cp = charsets; cp->name; cp++) {
+		cout << cp->name << ": ";
+
+		f = &in;
+		m = new map("cp1253", cp->name, '?');
+		m->setinput(f);
+		f = m;
+
+		int rc;
+		while ((rc = f->getcharacter()) != EOF)
+			cout << (unsigned char)rc;
+		cout << "\n";
+		in.rewind();
+		delete m;
+	}
+}
+
 int
 main(int argc, char *argv[])
 {
 	stdinput in;
 	filter *f = &in;			// Current pipeline input
+	char defchar = ' ';
 	char *sourcecs = NULL;
 	char *targetcs = NULL;
-	char defchar = ' ';
-	char *defsourcecs = "ISO-8859-7";	// Default encodings
-	char *deftargetcs = "ISO-8859-7";
 	char *xflag = NULL;
 	filter *ienc = NULL;
 	filter *oenc = NULL;
@@ -135,10 +240,13 @@ main(int argc, char *argv[])
 	char c;
 
 	setname(argv[0]);
-	while ((c = getopt(argc, argv, "S:s:t:T:x:rhd:vL")) != EOF)
+	while ((c = getopt(argc, argv, "S:s:t:T:x:rhd:vLR")) != EOF)
 		switch (c) {
 		case 'r': rflag = true; break;
 		case 'h': hflag = true; break;
+		case 'R':
+			rosetta();
+			exit(0);
 		case 'L':
 			encodings();
 			exit(0);
@@ -157,74 +265,14 @@ main(int argc, char *argv[])
 				error("No source encoding was specified with -S\n");
 				usage();
 			}
-			if (strcmp(optarg, "8bit") == 0)
-				;
-			else if (strcmp(optarg, "UCS-2") == 0) {
-				defsourcecs = "Unicode";
-				ienc = new ucs2i;
-			} else if (strcmp(optarg, "UTF-8") == 0) {
-				defsourcecs = "Unicode";
-				ienc = new utf8i;
-			} else if (strcmp(optarg, "UTF-7") == 0) {
-				defsourcecs = "Unicode";
-				ienc = new utf7i;
-			} else if (strcmp(optarg, "HTML") == 0)
-				ienc = new htmli;
-			else if (strcmp(optarg, "Base64") == 0)
-				ienc = new base64i;
-			else if (strcmp(optarg, "Quoted") == 0)
-				ienc = new quotei;
-			else if (strcmp(optarg, "RTF") == 0)
-				ienc = new rtfi;
-			else if (strcmp(optarg, "Java") == 0) {
-				defsourcecs = "Unicode";
-				ienc = new javai;
-			} else if (strcmp(optarg, "HTML-Symbol") == 0)
-				ienc = new lex(lexuhtmls);
-			else if (strcmp(optarg, "HTML-Lat") == 0)
-				ienc = new lex(lexuhtmll1);
-			else {
-				error("Unknown -S source encoding ");
-				cerr << optarg << "\n";
-				usage();
-			}
+			ienc = input_encoding(optarg);
 			break;
 		case 'T':
 			if (!optarg) {
 				error("No target encoding was specified with -T\n");
 				usage();
 			}
-			if (strcmp(optarg, "8bit") == 0)
-				;
-			else if (strcmp(optarg, "UCS-2") == 0) {
-				deftargetcs = "Unicode";
-				oenc = new ucs2o;
-			} else if (strcmp(optarg, "UTF-8") == 0) {
-				deftargetcs = "Unicode";
-				oenc = new utf8o;
-			} else if (strcmp(optarg, "UTF-7") == 0) {
-				deftargetcs = "Unicode";
-				oenc = new utf7o;
-			} else if (strcmp(optarg, "HTML") == 0)
-				oenc = new htmlo;
-			else if (strcmp(optarg, "Base64") == 0)
-				oenc = new base64o;
-			else if (strcmp(optarg, "Quoted") == 0)
-				oenc = new quoteo;
-			else if (strcmp(optarg, "RTF") == 0)
-				oenc = new rtfo;
-			else if (strcmp(optarg, "Java") == 0) {
-				deftargetcs = "Unicode";
-				oenc = new javao;
-			} else if (strcmp(optarg, "HTML-Symbol") == 0)
-				oenc = new htmlso;
-			else if (strcmp(optarg, "HTML-Lat") == 0)
-				oenc = new htmll1o;
-			else {
-				error("Unknown -T target encoding ");
-				cerr << optarg << "\n";
-				usage();
-			}
+			oenc = output_encoding(optarg);
 			break;
 		case 's':
 			if (!optarg) {
