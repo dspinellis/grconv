@@ -15,7 +15,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: mkc.pl,v 1.3 2000/03/12 10:44:25 dds Exp $
+# $Id: mkc.pl,v 1.4 2000/05/06 20:38:15 dds Exp $
 #
 
 $tbl{'greek-ccitt'} = 1;
@@ -99,9 +99,9 @@ for $charset (keys %char) {
 	$count = grep(1, keys %{$n{$charset}});
 	$name = $charset;
 	$name =~ s/[^a-z0-9A-Z]/_/g;
-	print CS "\t{ \"$charset\", $count, $name},\n";
+	print CS "\t{ \"$charset\", $count, $name, false},\n";
 	for $alias (@{$alias{$charset}}) {
-		print CS "\t{ \"$alias\", $count, $name},\t\t// Alias\n";
+		print CS "\t{ \"$alias\", $count, $name, true},\t\t// Alias\n";
 	}
 	print CT "struct s_charentry $name\[\] = {\n";
 	print CTH "extern struct s_charentry $name\[\];\n";

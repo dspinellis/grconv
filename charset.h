@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: charset.h,v 1.1 2000/03/12 13:26:19 dds Exp $
+ * $Id: charset.h,v 1.2 2000/05/06 20:38:15 dds Exp $
  */
 
 struct s_charentry {
@@ -23,6 +23,7 @@ struct s_charset {
 	char *name;			// Character set name
 	int count;			// Number of characters
 	struct s_charentry *ce;		// Entries sorted by Unicode value
+	bool alias;			// True if the name is an alias
 };
 
 extern struct s_charset charsets[];
