@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.4 2000/03/12 12:41:34 dds Exp $
+# $Id: Makefile,v 1.5 2000/03/13 09:13:35 dds Exp $
 #
 
 VERSION=1.0
@@ -33,7 +33,7 @@ SRC=base64i.h base64o.h charset.h error.cpp error.h filter.h getopt.cpp \
 DOC=grconv.txt grconv.ps grconv.pdf grconv.html
 
 
-# Unix
+## Unix START
 EXE=
 O=o
 CC=g++
@@ -42,13 +42,15 @@ CC=g++
 #CFLAGS=-O
 # RPM
 CFLAGS=$(RPM_OPT_FLAGS)
+## Unix END
 
-# Windows
+## Windows START
 #EXE=.exe
 #O=obj
 #CC=cl
-#CFLAGS=-Zi
+##CFLAGS=-Zi
 #CFLAGS=-Ox
+## Windows END
 
 all: grconv$(EXE)
 
@@ -58,6 +60,12 @@ doc: $(DOC)
 
 grconv$(EXE): $(OBJ)
 	$(CC) $(CFLAGS) -o grconv $(OBJ)
+
+win32exe: Makefile.msc
+	nmake -f makefile.msc
+
+Makefile.msc: Makefile
+	sed "/^## Unix START/,/^## Unix END/d;/^## Windows START/,/^## Windows END/s/#//" Makefile >Makefile.msc
 
 lexi843.cpp: transcribe.l
 	flex -w -Pi843 transcribe.l
@@ -121,6 +129,7 @@ clean:
 	rm -f *.pdb
 	rm -f *.rpm
 	rm -f grconv.tar.gz
+	rm -f Makefile.msc
 
 clobber: clean
 	rm -f $(SRC)
@@ -145,3 +154,16 @@ lf:
 
 ci:
 	ci -u $(SRC)
+
+WEBTARGET=\dds\pubs\web\sw\greek\grconv
+
+webpage:
+	copy grconv.tar.gz $(WEBTARGET)\$(NAME)-$(RELEASE).tar.gz
+	copy grconv.html $(WEBTARGET)
+	copy grconv.exe $(WEBTARGET)
+	copy grconv-$(VERSION)-$(RELEASE).i386.rpm $(WEBTARGET)
+	copy grconv-$(VERSION)-$(RELEASE).src.rpm $(WEBTARGET)
+	copy grconv.txt $(WEBTARGET)\grconv.txt
+	copy grconv.pdf $(WEBTARGET)\grconv.pdf
+	copy grconv.ps $(WEBTARGET)\grconv.ps
+	sed "s/VER-REL/$(VERSION)-$(RELEASE)/g" <index.html >$(WEBTARGET)\index.html
