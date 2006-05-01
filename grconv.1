@@ -11,7 +11,7 @@
 .\" WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 .\" MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 .\"
-.\" $Id: grconv.1,v 1.9 2002/01/03 21:31:09 dds Exp $
+.\" $Id: grconv.1,v 1.10 2006/05/01 14:12:25 dds Exp $
 .\"
 .SH NAME
 grconv \- universal Greek character code converter
@@ -294,6 +294,11 @@ RTF to be read by Microsoft Word:
 .br
 grconv -S Base64 -h -t Windows -T RTF <mail.txt >mail.rtf
 .LP
+Transcribe the Winv -s 928 -x transcribe | winclip -c
+.LP
+Your Windows clipboard contains Greek text generated under MS-DOS, or
+Greek text generated in an old Windows application that does not
+support Unicode or different code pages.
 Microsoft Office 2000 applications refuse to paste it as Greek and
 show weird symbols instead.
 The following pipeline will convert the clipboard data into Unicode
@@ -301,13 +306,14 @@ Greek.
 Also note that the console code page must be set to the Greek OEM
 character set (code page 737) using the \fIchcp\fP command.
 .br
-Note that \fIwinclip\fP is part of the \fIoutwit\fP tool suite,
-probably available at the same site that hosts \fIgrconv\fP.
 winclip -p | grconv -s 737 -T UCS-16LE | winclip -cu
 .LP
 For the last two examples,
 note that \fIwinclip\fP is part of the \fIoutwit\fP tool suite,
-
+probably available at the same site that hosts \fIgrconv\fP.
+.SH "SEE ALSO"
+D. Spinellis. Greek character encoding for electronic mail messages. 
+Network Information Center, Request for Comments 1947, May 1996.  RFC-1947.
 .LP
 K. Simonsen.  Character Mnemonics and Character Sets.
 Network Information Center, Request for Comments 1345, June 1992.  RFC-1345.
