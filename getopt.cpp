@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: getopt.cpp,v 1.1 2000/03/12 13:26:19 dds Exp $
+ * $Id: getopt.cpp,v 1.2 2006/09/10 14:30:00 dds Exp $
  */
 
 /*
@@ -35,8 +35,10 @@
  * posted to Usenet net.sources list
  */
 
-#include <iostream.h>
+#include <iostream>
 #include <string.h>
+
+using namespace std;
 
 char	*optarg;	/* Global argument pointer. */
 int	optind;	/* Global argv index. */

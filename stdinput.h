@@ -11,14 +11,17 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: stdinput.h,v 1.2 2000/03/12 12:40:32 dds Exp $
+ * $Id: stdinput.h,v 1.3 2006/09/10 14:30:00 dds Exp $
  */
 
 #ifndef STDINPUT_
 #define STDINPUT_
 #include "filter.h"
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <errno.h>
+
+using namespace std;
 
 class stdinput: public filter {
 private:
@@ -52,7 +55,7 @@ public:
 		unsigned char c;
 		if (in) {
 			for (;;) {
-				in->get(c);
+				c = in->get();
 				if (in->eof())
 					if (*argv)
 						openargfile();
@@ -62,7 +65,7 @@ public:
 					return (c);
 			}
 		} else {
-			cin.get(c);
+			c = cin.get();
 			return (cin.eof() ? EOF : c);
 		}
 	};

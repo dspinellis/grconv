@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: queue.h,v 1.1 2000/03/12 13:26:19 dds Exp $
+ * $Id: queue.h,v 1.2 2006/09/10 14:30:00 dds Exp $
  */
 
 #ifndef QUEUE_
@@ -27,7 +27,7 @@ private:
 	virtual void fillbuff() = 0;	// Fill the queue buffer
 public:
 	void nq(int c);		// Add a character to the output queue
-	unsigned int getcharacter();	// Get a character from the output queue
+	int getcharacter();	// Get a character from the output queue
 	queue(const int qlen = 100);
 	~queue() { delete[] q; };
 };

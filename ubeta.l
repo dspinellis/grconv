@@ -12,7 +12,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ubeta.l,v 1.4 2001/02/13 09:39:32 dds Exp $
+ * $Id: ubeta.l,v 1.5 2006/09/10 14:30:00 dds Exp $
  */
 
 
@@ -126,7 +126,7 @@ Z		{ l->nq((unsigned char)'æ'); return; }
 \$[0-9]*	{ BEGIN(INITIAL); }	/* Switch to Greek font */
 &[0-9]*		{ BEGIN(ROMAN); }	/* Switch to Roman font */
 
-.		{ l->nq(*yytext); return; }
+.		{ l->nq((unsigned char)*yytext); return; }
 \n		{ l->nq('\n'); return; }
 
 <<EOF>>		{ l->nq(EOF); return; }

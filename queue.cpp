@@ -11,8 +11,11 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: queue.cpp,v 1.1 2000/03/12 13:26:19 dds Exp $
+ * $Id: queue.cpp,v 1.2 2006/09/10 14:30:00 dds Exp $
  */
+
+#include <iostream>
+using namespace std;
 
 #include "queue.h"
 
@@ -31,7 +34,7 @@ queue::nq(int c)
 		qtail = 0;
 }
 
-unsigned int
+int
 queue::getcharacter()
 {
 	int c;

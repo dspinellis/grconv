@@ -11,13 +11,13 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: strinput.h,v 1.1 2000/05/06 15:05:17 dds Exp $
+ * $Id: strinput.h,v 1.2 2006/09/10 14:30:00 dds Exp $
  */
 
 #ifndef STRINPUT_
 #define STRINPUT_
 #include "filter.h"
-#include <fstream.h>
+#include <fstream>
 #include <errno.h>
 
 class strinput: public filter {
