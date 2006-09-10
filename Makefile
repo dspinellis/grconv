@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.25 2006/09/10 15:14:59 dds Exp $
+# $Id: Makefile,v 1.26 2006/09/10 15:30:48 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
@@ -86,7 +86,7 @@ CFLAGS = $(FLAGS) -I. -DVERNAME="\"$(VERSION)-$(RELEASE)\""
 
 all: grconv$(EXE)
 
-everything: grconv$(EXE) grconv.tar.gz doc rpm
+everything: grconv$(EXE) grconv.tar.gz doc
 
 doc: $(DOC)
 
@@ -126,7 +126,6 @@ clean:
 	rm -f *.o *.obj grconv.exe grconv
 	rm -f $(DOC)
 	rm -f *.pdb core
-	rm -f *.rpm
 	rm -f grconv.tar.gz
 	rm -f Makefile.msc
 	rm -f $(SPEC)
@@ -146,15 +145,6 @@ grconv.tar.gz: $(SRC)
 	tar cvf - $(NAME) | gzip -c >grconv.tar.gz
 	rm -rf $(NAME)
 
-rpm: grconv.tar.gz
-	cp grconv.tar.gz /usr/src/redhat/SOURCES
-	sed "s/^Version:.*/Version: $(VERSION)/; \
-	     s/^Release:.*/Release: $(RELEASE)/" \
-		grconv.spec >$(SPEC)
-	rpm -ba $(SPEC)
-	cp /usr/src/redhat/SRPMS/$(NAME)-$(RELEASE).src.rpm .
-	cp /usr/src/redhat/RPMS/i386/$(NAME)-$(RELEASE).i386.rpm .
-
 lf:
 	perl -pi -e 's/\r//' $(SRC)
 
@@ -168,8 +158,6 @@ webpage:
 	copy grconv.tar.gz $(WEBTARGET)\$(NAME)-$(RELEASE).tar.gz
 	copy grconv.html $(WEBTARGET)
 	copy grconv.exe $(WEBTARGET)
-	copy grconv-$(VERSION)-$(RELEASE).i386.rpm $(WEBTARGET)
-	copy grconv-$(VERSION)-$(RELEASE).src.rpm $(WEBTARGET)
 	copy grconv.txt $(WEBTARGET)\grconv.txt
 	copy grconv.pdf $(WEBTARGET)\grconv.pdf
 	copy grconv.ps $(WEBTARGET)\grconv.ps
@@ -181,6 +169,8 @@ DOSDIR=/dos/dds/src/sysutil/grconv
 dosfs: $(LEXOUT)
 	tar cfz $(DOSDIR)/RCS.tgz RCS
 	cp -f $(SRC) $(DOSDIR)
-	cp -f *.rpm $(DOSDIR)
 	cp -f grconv.{tar.gz,html,txt,pdf,ps,jpg} $(DOSDIR)
 	cp -f $(LEXOUT) $(DOSDIR)
+
+dist:
+	tar -C .. -cf - grconv | gzip -c | plink $(HOST) tar -C src -xzvf -
