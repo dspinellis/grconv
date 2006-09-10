@@ -15,8 +15,15 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: mkc.pl,v 1.4 2000/05/06 20:38:15 dds Exp $
+# $Id: mkc.pl,v 1.5 2006/09/10 15:13:26 dds Exp $
 #
+
+$disclaimer = "/*
+ * Automatically generated file.
+ * Do not modify this file directly.
+ * Instead, modify the source files: $0, " . join(', ', @ARGV) . ".
+ */
+";
 
 $tbl{'greek-ccitt'} = 1;
 $tbl{'greek7'} = 1;
@@ -87,14 +94,16 @@ while  (<>) {
 open(CS, '>charset.cpp') || die;
 open(CT, '>chartbl.cpp') || die;
 open(CTH, '>chartbl.h') || die;
-print CS '
+print CS $disclaimer . '
 #include "charset.h"
 #include "chartbl.h"
 
 struct s_charset charsets[] = {
 ';
-print CT '#include "charset.h"
+print CT $disclaimer . '#include "charset.h"
 ';
+print CTH $disclaimer;
+
 for $charset (keys %char) {
 	$count = grep(1, keys %{$n{$charset}});
 	$name = $charset;
