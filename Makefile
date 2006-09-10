@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.26 2006/09/10 15:30:48 dds Exp $
+# $Id: Makefile,v 1.27 2006/09/10 17:09:37 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
@@ -26,6 +26,10 @@ MANDIR=/usr/local/man/man1
 
 # Program executable directory
 BINDIR=/usr/local/bin
+
+# Unix host connectivity for formatting documentation
+UXHOST=spiti
+SSH=plink
 
 OBJ=i843.$(O) grconv.$(O) queue.$(O) charset.$(O) chartbl.$(O) getopt.$(O) \
 	map.$(O) translit.$(O) ut843.$(O) error.$(O) utf7o.$(O) utf7i.$(O) \
@@ -109,23 +113,23 @@ depend:
 	ls *.cpp | sed 's/\(.*\).cpp/\1.$$(O): \1.cpp/' >>Makefile
 
 grconv.ps: grconv.1
-	groff -man -Tps $? > $@
+	$(SSH) $(UXHOST) groff -man -Tps <$? > $@
 
 grconv.txt: grconv.1
-	groff -man -Tascii $? | col -b > $@
+	$(SSH) $(UXHOST) "groff -man -Tascii | col -b " <$? > $@
 
 grconv.pdf: grconv.ps
 	ps2pdf $? $@
 
 grconv.html: grconv.1
-	man2html $? | sed '1d;s,<A HREF="http.*</A>,,;s/^,$$/man2html,/' > $@
+	$(SSH) $(UXHOST) groff -mhtml -Thtml -man <$? | sed -e 's/&minus;/-/g;s/&bull;/\&#8226;/g' >$@
 
 clean:
 	rm -f $(LEXOUT)
 	rm -f charset.cpp chartbl.cpp chartbl.h
-	rm -f *.o *.obj grconv.exe grconv
+	-rm -f *.o *.obj grconv.exe grconv
 	rm -f $(DOC)
-	rm -f *.pdb core
+	-rm -f *.pdb core
 	rm -f grconv.tar.gz
 	rm -f Makefile.msc
 	rm -f $(SPEC)
@@ -139,10 +143,12 @@ clobber: clean
 
 grconv.tar.gz: $(SRC)
 	tar cvf grconv.tar $(SRC)
+	-chmod 666 $(NAME)/*
 	rm -rf $(NAME)
 	mkdir $(NAME)
 	tar -C $(NAME) -xv -f grconv.tar
 	tar cvf - $(NAME) | gzip -c >grconv.tar.gz
+	chmod 666 $(NAME)/*
 	rm -rf $(NAME)
 
 lf:
@@ -151,18 +157,20 @@ lf:
 ci:
 	ci -u $(SRC)
 
-WEBTARGET=\dds\pubs\web\home\sw\greek\grconv
+WEBTARGET=/dds/pubs/web/home/sw/greek/grconv
 
 webpage:
-	del $(WEBTARGET)
-	copy grconv.tar.gz $(WEBTARGET)\$(NAME)-$(RELEASE).tar.gz
-	copy grconv.html $(WEBTARGET)
-	copy grconv.exe $(WEBTARGET)
-	copy grconv.txt $(WEBTARGET)\grconv.txt
-	copy grconv.pdf $(WEBTARGET)\grconv.pdf
-	copy grconv.ps $(WEBTARGET)\grconv.ps
-	copy grconv.jpg $(WEBTARGET)\grconv.jpg
-	sed "s/VER-REL/$(VERSION)-$(RELEASE)/g" <index.html >$(WEBTARGET)\index.html
+	chmod 666 $(WEBTARGET)/*
+	rm -f $(WEBTARGET)/*
+	cp grconv.tar.gz $(WEBTARGET)\$(NAME)-$(RELEASE).tar.gz
+	cp grconv.html $(WEBTARGET)
+	strip grconv.exe
+	cp grconv.exe $(WEBTARGET)
+	cp grconv.txt $(WEBTARGET)\grconv.txt
+	cp grconv.pdf $(WEBTARGET)\grconv.pdf
+	cp grconv.ps $(WEBTARGET)\grconv.ps
+	cp grconv.jpg $(WEBTARGET)\grconv.jpg
+	sed "s/VER-REL/$(VERSION)-$(RELEASE)/g" <index.html >$(WEBTARGET)/index.html
 
 DOSDIR=/dos/dds/src/sysutil/grconv
 
