@@ -18,8 +18,8 @@ Run "make" to compile the program and "make install" to install the
 program and its documentation.  Under Windows run "nmake /f makefile.msc"
 to compile the program.
 
-Many thanks to Alexis Zavras, Isidor Kouvelas, and Alexandros Chousainov
-who provided valuable input and suggestions during the program's testing.
+Many thanks to Alexis Zavras, Isidor Kouvelas, Alexandros Chousainov,
+and Athanasios Oikonomou who provided valuable input and suggestions.
 
 Diomidis Spinellis
-$Id: readme,v 1.3 2000/05/17 13:34:12 dds Exp $
+$Id: readme,v 1.4 2006/09/10 15:14:59 dds Exp $

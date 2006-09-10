@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: grconv.cpp,v 1.13 2006/09/10 14:40:23 dds Exp $
+ * $Id: grconv.cpp,v 1.14 2006/09/10 15:14:59 dds Exp $
  */
 
 #include <cstdlib>
@@ -120,7 +120,7 @@ version()
 {
 	cout << 
 	"Universal Greek character code converter.  Version " VERNAME "\n"
-	"(C) Copyright 2000-2002 Diomidis D. Spinelllis.  All rights reserved.\n\n"
+	"(C) Copyright 2000-2006 Diomidis D. Spinelllis.  All rights reserved.\n\n"
 
 	"Permission to use, copy, and distribute this software and its\n"
 	"documentation for any purpose and without fee is hereby granted,\n"

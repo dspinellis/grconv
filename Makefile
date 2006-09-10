@@ -1,5 +1,5 @@
 # 
-# (C) Copyright 2000-2002 Diomidis Spinellis
+# (C) Copyright 2000-2006 Diomidis Spinellis
 # 
 # Permission to use, copy, and distribute this software and its
 # documentation for any purpose and without fee is hereby granted,
@@ -11,12 +11,12 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.24 2006/09/10 14:29:08 dds Exp $
+# $Id: Makefile,v 1.25 2006/09/10 15:14:59 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
 
-VERSION=1.7
+VERSION=1.8
 RELEASE=1
 NAME=grconv-$(VERSION)
 SPEC=$(NAME)-$(RELEASE).spec
