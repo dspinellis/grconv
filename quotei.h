@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: quotei.h,v 1.2 2003/06/03 12:22:12 dds Exp $
+ * $Id: quotei.h,v 1.3 2006/09/10 14:36:31 dds Exp $
  */
 
 #ifndef QUOTEI_
@@ -39,7 +39,6 @@ public:
 		int c1, c2;
 
 	again:
-		c = input->getagain:
 		c = input->getcharacter();
 		if (eatnl && c == '\n') {
 			eatnl = false;
@@ -59,4 +58,7 @@ public:
 		c2 = input->getcharacter();
 		if (c1 == EOF || c2 == EOF)
 			fatal("EOF within quoted escape character\n");
-		return (hexval(c1) << 4 | hex
+		return (hexval(c1) << 4 | hexval(c2));
+        }
+};
+#endif
