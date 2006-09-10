@@ -11,11 +11,13 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: grconv.cpp,v 1.12 2002/01/03 21:30:44 dds Exp $
+ * $Id: grconv.cpp,v 1.13 2006/09/10 14:40:23 dds Exp $
  */
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
+
+using namespace std;
 
 // To set binary I/O
 #ifdef _WIN32

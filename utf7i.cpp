@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: utf7i.cpp,v 1.1 2000/03/12 13:26:19 dds Exp $
+ * $Id: utf7i.cpp,v 1.2 2006/09/10 14:40:23 dds Exp $
  */
 
 /*
@@ -53,7 +53,9 @@ TRADEMARKS: Taligent and the Taligent Design Mark are registered
 trademarks of Taligent, Inc.
 */
 
-#include <iostream.h>
+#include <iostream>
+
+using namespace std;
 
 #include "error.h"
 #include "filter.h"

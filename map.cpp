@@ -11,12 +11,12 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: map.cpp,v 1.6 2006/09/10 14:30:00 dds Exp $
+ * $Id: map.cpp,v 1.7 2006/09/10 14:40:23 dds Exp $
  */
 
 #include <cstdlib>
-#include <stddef.h>
-#include <string.h>
+#include <cstddef>
+#include <cstring>
 #include <iostream>
 
 using namespace std;

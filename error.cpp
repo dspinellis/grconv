@@ -11,11 +11,13 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: error.cpp,v 1.1 2000/03/12 13:26:19 dds Exp $
+ * $Id: error.cpp,v 1.2 2006/09/10 14:40:23 dds Exp $
  */
 
-#include <iostream.h>
-#include <stdlib.h>
+#include <iostream>
+#include <cstdlib>
+
+using namespace std;
 
 static char *progname = "unknown";
 
