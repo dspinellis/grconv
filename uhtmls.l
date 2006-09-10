@@ -12,7 +12,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: uhtmls.l,v 1.1 2000/04/19 10:54:10 dds Exp $
+ * $Id: uhtmls.l,v 1.2 2006/09/10 14:30:30 dds Exp $
  */
 
 
@@ -90,7 +90,7 @@ static lex *thislex;
 &chi;		{ l->nq(247); return; } 
 &psi;		{ l->nq(248); return; } 
 &omega;		{ l->nq(249); return; } 
-.		{ l->nq(*yytext); return; }
+.		{ l->nq((unsigned char)*yytext); return; }
 \n		{ l->nq('\n'); return; }
 
 <<EOF>>		{ l->nq(EOF); return; }

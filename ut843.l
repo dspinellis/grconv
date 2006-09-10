@@ -12,7 +12,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ut843.l,v 1.2 2000/03/18 17:20:23 dds Exp $
+ * $Id: ut843.l,v 1.3 2006/09/10 14:30:30 dds Exp $
  */
 
 
@@ -114,7 +114,7 @@ o_		{ l->nq((unsigned char)'ù'); return; }
 o_'		{ l->nq((unsigned char)'ş'); return; }
 \?		{ l->nq((unsigned char)';'); return; }
 
-.		{ l->nq(*yytext); return; }
+.		{ l->nq((unsigned char)*yytext); return; }
 \n		{ l->nq('\n'); return; }
 
 <<EOF>>		{ l->nq(EOF); return; }
