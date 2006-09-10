@@ -11,12 +11,12 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.23 2002/01/03 21:33:30 dds Exp $
+# $Id: Makefile,v 1.24 2006/09/10 14:29:08 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
 
-VERSION=1.6
+VERSION=1.7
 RELEASE=1
 NAME=grconv-$(VERSION)
 SPEC=$(NAME)-$(RELEASE).spec
@@ -139,11 +139,11 @@ clobber: clean
 	rm -f $(SRC)
 
 grconv.tar.gz: $(SRC)
-	tar cvfz grconv.tar.gz $(SRC)
+	tar cvf grconv.tar $(SRC)
 	rm -rf $(NAME)
 	mkdir $(NAME)
-	tar -C $(NAME) -xvz -f grconv.tar.gz
-	tar cvfz grconv.tar.gz $(NAME)
+	tar -C $(NAME) -xv -f grconv.tar
+	tar cvf - $(NAME) | gzip -c >grconv.tar.gz
 	rm -rf $(NAME)
 
 rpm: grconv.tar.gz
