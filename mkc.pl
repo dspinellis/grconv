@@ -3,19 +3,19 @@
 # Read RFC 1345 and defacto standards
 # Produce a set of sorted code set translation tables
 #
-# (C) Copyright 1996, 2000 D. Spinellis.  All rights reserved.
-# 
+# (C) Copyright 1996-2007 D. Spinellis.  All rights reserved.
+#
 # Permission to use, copy, and distribute this software and its
 # documentation for any purpose and without fee is hereby granted,
 # provided that the above copyright notice appear in all copies and that
 # both that copyright notice and this permission notice appear in
 # supporting documentation.
-# 
+#
 # THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR IMPLIED
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: mkc.pl,v 1.5 2006/09/10 15:13:26 dds Exp $
+# $Id: mkc.pl,v 1.6 2007/03/01 16:53:25 dds Exp $
 #
 
 $disclaimer = "/*
@@ -47,10 +47,10 @@ push(@{$alias{'ISO10646'}}, 'Unicode');
 
 # Read character descriptions
 while (<>) {
+	s/\r//;
 	next if (/^Simonsen     / || /^\f/ || /^$/ || /^RFC 1345/);
 	last if (/^4\.  CHARSETS/);
 	chop;
-	s/\r//;
 
 	# Read descriptions
 	if (/ SP     0020    SPACE/ ..  /4.  CHARSETS/) {
@@ -71,6 +71,7 @@ $uni{'??'} = 'ffff';
 
 # Read character sets
 while  (<>) {
+	s/\r//;
 	if (/^  \&charset (.*)/) {
 		$charset = $1;
 		$n = 0;
@@ -127,4 +128,3 @@ byuni
 {
 	return hex($uni{$a}) <=> hex($uni{$b});
 }
-
