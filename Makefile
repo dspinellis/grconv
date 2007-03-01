@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.29 2007/03/01 16:58:38 dds Exp $
+# $Id: Makefile,v 1.30 2007/03/01 17:01:36 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
@@ -170,6 +170,7 @@ webpage:
 	cp grconv.pdf $(WEBTARGET)/grconv.pdf
 	cp grconv.ps $(WEBTARGET)/grconv.ps
 	cp grconv.jpg $(WEBTARGET)/grconv.jpg
+	cp ChangeLog $(WEBTARGET)/ChangeLog.txt
 	sed "s/VER-REL/$(VERSION)-$(RELEASE)/g" <index.html >$(WEBTARGET)/index.html
 
 DOSDIR=/cygdrive/c/dos/dds/src/sysutil/grconv
