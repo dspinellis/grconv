@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: grconv.cpp,v 1.14 2006/09/10 15:14:59 dds Exp $
+ * $Id: grconv.cpp,v 1.15 2007/03/01 16:53:50 dds Exp $
  */
 
 #include <cstdlib>
@@ -94,14 +94,24 @@ usage()
 	exit(1);
 }
 
+int
+byname(const void *a, const void *b)
+{
+	return strcasecmp(((struct s_charset *)a)->name, ((struct s_charset *)b)->name);
+}
+
 void
 encodings()
 {
 	cout << "Valid input/output encodings are:\n"
-		"\tFor Unicode data: UCS-2 UCS-16 UCS-16BE UCS-16LE UTF-8 UTF-7 Java HTML\n"
-		"\tFor 8-bit data: 8bit Base64 Quoted RTF HTML HTML-Symbol HTML-Lat Beta\n"
+		"\tFor Unicode data: HTML Java UCS-16 UCS-16BE UCS-16LE UCS-2 UTF-7 UTF-8\n"
+		"\tFor 8-bit data: 8bit Base64 Beta HTML HTML-Lat HTML-Symbol Quoted RTF\n"
 	"Valid character sets are:\n";
 	int margin=0;
+	int ncharset = 0;
+	for (struct s_charset *cp = charsets; cp->name; cp++)
+		ncharset++;
+	qsort(charsets, ncharset, sizeof(*charsets), byname);
 	for (struct s_charset *cp = charsets; cp->name; cp++) {
 		cout << cp->name;
 		if (cp[1].name)
