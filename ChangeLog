@@ -1,4 +1,11 @@
-$Id: ChangeLog,v 1.7 2006/09/10 15:14:59 dds Exp $
+$Id: ChangeLog,v 1.8 2007/03/01 17:00:14 dds Exp $
+
+Thu Mar 01 18:58:51 EET 2007
+Version 1.9
+Remove carriage returns from character set files.  This corrects
+a problem with missing character sets on Mac OS X.
+Pointed by: Isidor Kouvelas
+Sorted the output list of available character sets and encodings.
 
 Sun Sep 10 19:06:25 DST 2006
 Version 1.8
