@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.30 2007/03/01 17:01:36 dds Exp $
+# $Id: Makefile,v 1.31 2007/03/01 17:59:10 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
@@ -159,9 +159,8 @@ ci:
 
 WEBTARGET=/cygdrive/c/dds/pubs/web/home/sw/greek/grconv
 
-webpage:
-	chmod 666 $(WEBTARGET)/*
-	rm -f $(WEBTARGET)/*
+webpage: everything
+	-rm -f $(WEBTARGET)/*
 	cp grconv.tar.gz $(WEBTARGET)/$(NAME)-$(RELEASE).tar.gz
 	cp grconv.html $(WEBTARGET)
 	strip grconv.exe
