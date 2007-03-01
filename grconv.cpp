@@ -1,5 +1,5 @@
 /* 
- * (C) Copyright 2000-2002 Diomidis Spinellis.
+ * (C) Copyright 2000-2007 Diomidis Spinellis.
  * 
  * Permission to use, copy, and distribute this software and its
  * documentation for any purpose and without fee is hereby granted,
@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: grconv.cpp,v 1.15 2007/03/01 16:53:50 dds Exp $
+ * $Id: grconv.cpp,v 1.16 2007/03/01 16:54:33 dds Exp $
  */
 
 #include <cstdlib>
@@ -128,9 +128,9 @@ encodings()
 static void
 version()
 {
-	cout << 
+	cout <<
 	"Universal Greek character code converter.  Version " VERNAME "\n"
-	"(C) Copyright 2000-2006 Diomidis D. Spinelllis.  All rights reserved.\n\n"
+	"(C) Copyright 2000-2007 Diomidis Spinelllis.  All rights reserved.\n\n"
 
 	"Permission to use, copy, and distribute this software and its\n"
 	"documentation for any purpose and without fee is hereby granted,\n"
