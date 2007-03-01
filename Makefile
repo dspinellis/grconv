@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.28 2007/03/01 16:55:02 dds Exp $
+# $Id: Makefile,v 1.29 2007/03/01 16:58:38 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
@@ -157,22 +157,22 @@ lf:
 ci:
 	ci -u $(SRC)
 
-WEBTARGET=/dds/pubs/web/home/sw/greek/grconv
+WEBTARGET=/cygdrive/c/dds/pubs/web/home/sw/greek/grconv
 
 webpage:
 	chmod 666 $(WEBTARGET)/*
 	rm -f $(WEBTARGET)/*
-	cp grconv.tar.gz $(WEBTARGET)\$(NAME)-$(RELEASE).tar.gz
+	cp grconv.tar.gz $(WEBTARGET)/$(NAME)-$(RELEASE).tar.gz
 	cp grconv.html $(WEBTARGET)
 	strip grconv.exe
 	cp grconv.exe $(WEBTARGET)
-	cp grconv.txt $(WEBTARGET)\grconv.txt
-	cp grconv.pdf $(WEBTARGET)\grconv.pdf
-	cp grconv.ps $(WEBTARGET)\grconv.ps
-	cp grconv.jpg $(WEBTARGET)\grconv.jpg
+	cp grconv.txt $(WEBTARGET)/grconv.txt
+	cp grconv.pdf $(WEBTARGET)/grconv.pdf
+	cp grconv.ps $(WEBTARGET)/grconv.ps
+	cp grconv.jpg $(WEBTARGET)/grconv.jpg
 	sed "s/VER-REL/$(VERSION)-$(RELEASE)/g" <index.html >$(WEBTARGET)/index.html
 
-DOSDIR=/dos/dds/src/sysutil/grconv
+DOSDIR=/cygdrive/c/dos/dds/src/sysutil/grconv
 
 dosfs: $(LEXOUT)
 	tar cfz $(DOSDIR)/RCS.tgz RCS
