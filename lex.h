@@ -11,13 +11,18 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: lex.h,v 1.1 2000/03/12 13:26:19 dds Exp $
+ * $Id: lex.h,v 1.2 2007/03/01 17:56:48 dds Exp $
  */
 
 #ifndef LEX_
 #define LEX_
 #include "filter.h"
 #include "queue.h"
+
+#ifdef _WIN32
+#define isatty(x) 0
+#endif
+
 
 class lex: public filter, public queue {
 private:
