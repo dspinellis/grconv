@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: lex.h,v 1.2 2007/03/01 17:56:48 dds Exp $
+ * $Id: lex.h,v 1.3 2007/05/10 08:27:01 dds Exp $
  */
 
 #ifndef LEX_
@@ -21,6 +21,8 @@
 
 #ifdef _WIN32
 #define isatty(x) 0
+#else
+extern "C" int isatty(int);
 #endif
 
 
