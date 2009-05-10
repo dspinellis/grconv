@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.33 2007/05/10 08:29:31 dds Exp $
+# $Id: Makefile,v 1.34 2009/05/10 19:19:04 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
@@ -20,8 +20,6 @@ VERSION=1.10
 RELEASE=1
 NAME=grconv-$(VERSION)
 SPEC=$(NAME)-$(RELEASE).spec
-
-# Manual page directory
 MANDIR=/usr/local/man/man1
 
 # Program executable directory
@@ -44,7 +42,7 @@ SRC=base64i.h base64o.h charset.h error.cpp error.h filter.h getopt.cpp \
 	unistd.h utf7.cpp \
 	utf7.h utf7i.cpp utf7i.h utf7o.cpp utf7o.h utf8i.h utf8o.h \
 	htmlso.cpp htmlso.h \
-	betao.cpp betao.h \
+	betao.cpp betao.h  urlo.h urli.h \
 	i843.l uhtmls.l uhtmll1.l ut843.l ubeta.l \
 	mkc.pl rfc1345.txt defacto.txt Makefile grconv.spec index.html \
 	COPYING README ChangeLog

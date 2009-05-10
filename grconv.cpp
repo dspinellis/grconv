@@ -1,5 +1,5 @@
 /* 
- * (C) Copyright 2000-2007 Diomidis Spinellis.
+ * (C) Copyright 2000-2009 Diomidis Spinellis.
  * 
  * Permission to use, copy, and distribute this software and its
  * documentation for any purpose and without fee is hereby granted,
@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: grconv.cpp,v 1.16 2007/03/01 16:54:33 dds Exp $
+ * $Id: grconv.cpp,v 1.17 2009/05/10 19:19:04 dds Exp $
  */
 
 #include <cstdlib>
@@ -49,6 +49,7 @@ using namespace std;
 #include "base64o.h"
 #include "quoteo.h"
 #include "rtfo.h"
+#include "urlo.h"
 
 // Input encodings
 #include "ucs2i.h"
@@ -61,6 +62,7 @@ using namespace std;
 #include "base64i.h"
 #include "quotei.h"
 #include "rtfi.h"
+#include "urli.h"
 
 #include "getopt.h"
 #include "charset.h"
@@ -106,6 +108,7 @@ encodings()
 	cout << "Valid input/output encodings are:\n"
 		"\tFor Unicode data: HTML Java UCS-16 UCS-16BE UCS-16LE UCS-2 UTF-7 UTF-8\n"
 		"\tFor 8-bit data: 8bit Base64 Beta HTML HTML-Lat HTML-Symbol Quoted RTF\n"
+		"\tFor any data: URL\n"
 	"Valid character sets are:\n";
 	int margin=0;
 	int ncharset = 0;
@@ -130,7 +133,7 @@ version()
 {
 	cout <<
 	"Universal Greek character code converter.  Version " VERNAME "\n"
-	"(C) Copyright 2000-2007 Diomidis Spinelllis.  All rights reserved.\n\n"
+	"(C) Copyright 2000-2009 Diomidis Spinelllis.  All rights reserved.\n\n"
 
 	"Permission to use, copy, and distribute this software and its\n"
 	"documentation for any purpose and without fee is hereby granted,\n"
@@ -170,6 +173,8 @@ input_encoding(char *name)
 		return new rtfi;
 	else if (strcmp(name, "Java") == 0)
 		return new javai;
+	else if (strcmp(name, "URL") == 0)
+		return new urli;
 	else if (strcmp(name, "HTML-Symbol") == 0)
 		return new lex(lexuhtmls);
 	else if (strcmp(name, "HTML-Lat") == 0)
@@ -217,6 +222,8 @@ output_encoding(char *name)
 		return new htmll1o;
 	else if (strcmp(name, "Beta") == 0)
 		return new betao;
+	else if (strcmp(name, "URL") == 0)
+		return new urlo;
 	else {
 		error("Unknown -T target encoding ");
 		cerr << name << "\n";
@@ -246,10 +253,10 @@ rosetta()
 	filter *f;			// Current pipeline input
 	char *enc8[] = {
 		"8bit", "Base64", "Quoted", "RTF", "HTML", "HTML-Symbol",
-		"HTML-Lat", "Beta",
+		"HTML-Lat", "Beta", "URL",
 	};
 	char *enc16[] = {
-		"UCS-16", "UCS-16LE", "UTF-8", "UTF-7", "Java", "HTML", 
+		"UCS-16", "UCS-16LE", "UTF-8", "UTF-7", "Java", "HTML",
 	};
 	int i;
 
@@ -332,6 +339,8 @@ main(int argc, char *argv[])
 	char defchar = ' ';
 	char *sourcecs = NULL;
 	char *targetcs = NULL;
+	char *oenc_name = "";
+	char *ienc_name = "";
 	char *xflag = NULL;
 	filter *ienc = NULL;
 	filter *oenc = NULL;
@@ -364,14 +373,14 @@ main(int argc, char *argv[])
 				error("No source encoding was specified with -S\n");
 				usage();
 			}
-			ienc = input_encoding(optarg);
+			ienc = input_encoding(ienc_name = optarg);
 			break;
 		case 'T':
 			if (!optarg) {
 				error("No target encoding was specified with -T\n");
 				usage();
 			}
-			oenc = output_encoding(optarg);
+			oenc = output_encoding(oenc_name = optarg);
 			break;
 		case 's':
 			if (!optarg) {
@@ -415,7 +424,12 @@ main(int argc, char *argv[])
 	if (!targetcs)
 		targetcs = (char*)((oenc && oenc->iwidth() == 16) ? "Unicode" : "ISO-8859-7");
 
-	if (ienc) {
+	if (strcmp(ienc_name, "URL") == 0) {
+		ienc->setinput(f);
+		// Post-process with UTF-8
+		f = new utf8i;
+		f->setinput(ienc);
+	} else if (ienc) {
 		ienc->setinput(f);
 		f = ienc;
 	} else if (strcmp(sourcecs, "Unicode") == 0) {
@@ -463,7 +477,13 @@ main(int argc, char *argv[])
 		f = m;
 	}
 
-	if (oenc) {
+	if (strcmp(oenc_name, "URL") == 0) {
+		// Pre-process with UTF-8
+		filter *f2 = new utf8o;
+		f2->setinput(f);
+		oenc->setinput(f2);
+		f = oenc;
+	} else if (oenc) {
 		oenc->setinput(f);
 		f = oenc;
 	} else if (is_unicode(cs_find(targetcs))) {

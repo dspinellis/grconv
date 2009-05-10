@@ -1,4 +1,8 @@
-$Id: ChangeLog,v 1.10 2007/05/10 08:29:31 dds Exp $
+$Id: ChangeLog,v 1.11 2009/05/10 19:19:04 dds Exp $
+
+Sun May 10 22:11:41 GTB Daylight Time 2009
+Version 1.11
+Added URL encoding.
 
 Thu May 10 11:28:22 GTB Daylight Time 2007
 Version 1.10
