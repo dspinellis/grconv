@@ -11,7 +11,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.35 2009/05/10 19:26:34 dds Exp $
+# $Id: Makefile,v 1.36 2009/05/10 19:34:21 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
@@ -116,8 +116,9 @@ grconv.ps: grconv.1
 grconv.txt: grconv.1
 	$(SSH) $(UXHOST) "groff -man -Tascii | col -b " <$? > $@
 
+# The ps2pdf from MiKTeX works better than the Cygwin one
 grconv.pdf: grconv.ps
-	ps2pdf $? $@
+	cmd /c ps2pdf $? $@
 
 grconv.html: grconv.1
 	$(SSH) $(UXHOST) groff -mhtml -Thtml -man <$? | sed -e 's/&minus;/-/g;s/&bull;/\&#8226;/g' >$@
