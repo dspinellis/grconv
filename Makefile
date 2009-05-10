@@ -11,12 +11,12 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Id: Makefile,v 1.34 2009/05/10 19:19:04 dds Exp $
+# $Id: Makefile,v 1.35 2009/05/10 19:26:34 dds Exp $
 #
 # Major clean-up by Alexis Zavras
 #
 
-VERSION=1.10
+VERSION=1.11
 RELEASE=1
 NAME=grconv-$(VERSION)
 SPEC=$(NAME)-$(RELEASE).spec
@@ -139,6 +139,9 @@ install: grconv
 clobber: clean
 	rm -f $(SRC)
 
+co:
+	co $(SRC)
+
 grconv.tar.gz: $(SRC)
 	-chmod 666 $(NAME)/*
 	rm -rf $(NAME)
@@ -154,7 +157,7 @@ lf:
 ci:
 	ci -u $(SRC)
 
-WEBTARGET=/cygdrive/c/dds/pubs/web/home/sw/greek/grconv
+WEBTARGET=$(UH)/dds/pubs/web/home/sw/greek/grconv
 
 webpage: everything
 	-rm -f $(WEBTARGET)/*
@@ -169,7 +172,7 @@ webpage: everything
 	cp ChangeLog $(WEBTARGET)/ChangeLog.txt
 	sed "s/VER-REL/$(VERSION)-$(RELEASE)/g" <index.html >$(WEBTARGET)/index.html
 
-DOSDIR=/cygdrive/c/dos/dds/src/sysutil/grconv
+DOSDIR=$(UH)/dos/dds/src/sysutil/grconv
 
 dosfs: $(LEXOUT)
 	tar cfz $(DOSDIR)/RCS.tgz RCS
