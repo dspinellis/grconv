@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: stdinput.h,v 1.3 2006/09/10 14:30:00 dds Exp $
+ * $Id: stdinput.h,v 1.4 2012/04/25 10:11:08 dds Exp $
  */
 
 #ifndef STDINPUT_
@@ -34,7 +34,7 @@ private:
 			delete in;
 		}
 		in = new ifstream(*argv);
-		if (in->bad()) {
+		if (!in->good()) {
 			error("Unable to open input file ");
 			cerr << *argv << ": " << strerror(errno) << "\n";
 			exit(1);
