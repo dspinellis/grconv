@@ -11,7 +11,7 @@
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: getopt.cpp,v 1.3 2006/09/10 14:40:23 dds Exp $
+ * $Id: getopt.cpp,v 1.4 2012/04/25 10:11:45 dds Exp $
  */
 
 /*
@@ -37,6 +37,7 @@
 
 #include <iostream>
 #include <cstring>
+#include <cstdio>
 
 using namespace std;
 
