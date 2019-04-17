@@ -27,6 +27,6 @@ public:
 	virtual int iwidth() { return (8); };		// Input char width
 	virtual int owidth() { return (8); };		// Output char width
 	void setinput(filter *i) {input = i;};
-	virtual char *outputcs() { return ((char *)"X-Unknown"); };	// Output character set
+	virtual const char *outputcs() { return "X-Unknown"; };	// Output character set
 };
 #endif

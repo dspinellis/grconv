@@ -22,7 +22,7 @@ void
 htmlso::fillbuff()
 {
 	unsigned int c;
-	char *out;
+	const char *out;
 
 	// See http://www.w3.org/TR/html4/sgml/entities.html
 	switch (c = input->getcharacter()) {
@@ -78,7 +78,7 @@ htmlso::fillbuff()
 	default: nq(c); return;
 	}
 	nq('&');
-	for (char *s = out; *s; s++)
+	for (const char *s = out; *s; s++)
 		nq(*s);
 	nq(';');
 }

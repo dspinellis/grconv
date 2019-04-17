@@ -14,6 +14,6 @@
  * $Id: error.h,v 1.1 2000/03/12 13:26:19 dds Exp $
  */
 
-void setname(char *s);
-void fatal(char *s);
-void error(char *s);
+void setname(const char *s);
+void fatal(const char *s);
+void error(const char *s);

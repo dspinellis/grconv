@@ -20,7 +20,7 @@ struct s_charentry {
 };
 
 struct s_charset {
-	char *name;			// Character set name
+	const char *name;		// Character set name
 	int count;			// Number of characters
 	struct s_charentry *ce;		// Entries sorted by Unicode value
 	bool alias;			// True if the name is an alias

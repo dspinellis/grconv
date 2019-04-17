@@ -147,7 +147,7 @@ version()
 }
 
 filter *
-input_encoding(char *name)
+input_encoding(const char *name)
 {
 	if (strcmp(name, "8bit") == 0)
 		return NULL;
@@ -190,7 +190,7 @@ input_encoding(char *name)
 }
 
 filter *
-output_encoding(char *name)
+output_encoding(const char *name)
 {
 	if (strcmp(name, "8bit") == 0)
 		return NULL;
@@ -251,11 +251,11 @@ rosetta()
 	"Á¢ÂÃÄÅ¸ÆÇ¹ÈÉºÚÊËÌÍÎÏ¼ĞÑÓÔÕ¾ÛÖ×ØÙ¿áÜâãäåİæçŞèéßúÀêëìíîïüğñòóôõıûàö÷øùş"
 	);
 	filter *f;			// Current pipeline input
-	char *enc8[] = {
+	const char *enc8[] = {
 		"8bit", "Base64", "Quoted", "RTF", "HTML", "HTML-Symbol",
 		"HTML-Lat", "Beta", "URL",
 	};
-	char *enc16[] = {
+	const char *enc16[] = {
 		"UCS-16", "UCS-16LE", "UTF-8", "UTF-7", "Java", "HTML",
 	};
 	int i;
@@ -337,11 +337,11 @@ main(int argc, char *argv[])
 	stdinput in;
 	filter *f = &in;			// Current pipeline input
 	char defchar = ' ';
-	char *sourcecs = NULL;
-	char *targetcs = NULL;
-	char *oenc_name = "";
-	char *ienc_name = "";
-	char *xflag = NULL;
+	const char *sourcecs = NULL;
+	const char *targetcs = NULL;
+	const char *oenc_name = "";
+	const char *ienc_name = "";
+	const char *xflag = NULL;
 	filter *ienc = NULL;
 	filter *oenc = NULL;
 	bool hflag = false, rflag = false;

@@ -22,7 +22,7 @@ void
 betao::fillbuff()
 {
 	unsigned int c;
-	char *out;
+	const char *out;
 
 	switch (c = input->getcharacter()) {
 	case 162: out = "*/A"; break;
@@ -96,6 +96,6 @@ betao::fillbuff()
 	case 254: out = "W/"; break;
 	default: nq(c); return;
 	}
-	for (char *s = out; *s; s++)
+	for (const char *s = out; *s; s++)
 		nq(*s);
 }

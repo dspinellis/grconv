@@ -25,8 +25,8 @@ private:
 	int pushed_char;
 	inline int hexval(char c)
 	{
-		char *hex = "0123456789abcdef";
-		char *s;
+		const char *hex = "0123456789abcdef";
+		const char *s;
 
 		if ((s = strchr(hex, c)) == NULL)
 			fatal("Non-hex digit in RTF escape\n");

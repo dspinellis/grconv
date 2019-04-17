@@ -25,8 +25,8 @@ private:
 	bool eatnl;
 	inline int hexval(char c)
 	{
-		char *hex = "0123456789ABCDEF";
-		char *s;
+		const char *hex = "0123456789ABCDEF";
+		const char *s;
 
 		if ((s = strchr(hex, c)) == NULL)
 			fatal("Non-hex digit in quoted escape\n");

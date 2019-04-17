@@ -19,23 +19,23 @@
 
 using namespace std;
 
-static char *progname = "unknown";
+static const char *progname = "unknown";
 
 void
-setname(char *s)
+setname(const char *s)
 {
 	progname = s;
 }
 
 void
-fatal(char *s)
+fatal(const char *s)
 {
 	cerr << progname << ": " << s;
 	exit(1);
 }
 
 void
-error(char *s)
+error(const char *s)
 {
 	cerr << progname << ": " << s;
 }

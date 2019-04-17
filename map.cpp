@@ -29,7 +29,7 @@ using namespace std;
 #include "charset.h"
 
 struct s_charset *
-cs_find(char *name) 
+cs_find(const char *name) 
 {
 	struct s_charset *cp;
 
@@ -59,7 +59,7 @@ void encodings();
  * in and the character set specified in out.  Characters that can
  * not be represented in out are set to def.
  */
-map::map(char *in, char *out, char def)
+map::map(const char *in, const char *out, char def)
 {
 	int i;
 	struct s_charset *inp, *outp;
@@ -123,7 +123,7 @@ map::getcharacter()
 		return (charmap[c]);
 }
 
-char *
+const char *
 map::outputcs()
 {
 	return (ocs);

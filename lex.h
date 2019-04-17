@@ -36,6 +36,6 @@ public:
 	int getcharacter() { return (queue::getcharacter()); };
 
 	// Most of our lex files are coded using this
-	char *outputcs() { return ("Windows-1253"); };
+	const char *outputcs() { return ("Windows-1253"); };
 };
 #endif

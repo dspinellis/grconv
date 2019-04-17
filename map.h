@@ -24,13 +24,13 @@ private:
 	int *charmap;			// Map from source to target
 	char default_char;		// Default map character
 	bool identity;			// True if map is the identity function
-	char *ocs;			// Output character set
+	const char *ocs;		// Output character set
 public:
-	map(char *source, char *target, char dflt);
+	map(const char *source, const char *target, char dflt);
 	int getcharacter();
-	char *outputcs();
+	const char *outputcs();
 };
 
-struct s_charset * cs_find(char *name);
+struct s_charset * cs_find(const char *name);
 bool is_unicode(struct s_charset *cs);
 #endif

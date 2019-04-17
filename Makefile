@@ -29,7 +29,7 @@ BINDIR=/usr/local/bin
 UXHOST=spiti
 SSH=plink
 
-OBJ=i843.$(O) grconv.$(O) queue.$(O) charset.$(O) chartbl.$(O) getopt.$(O) \
+OBJ=i843.$(O) grconv.$(O) queue.$(O) charset.$(O) chartbl.$(O) \
 	map.$(O) translit.$(O) ut843.$(O) error.$(O) utf7o.$(O) utf7i.$(O) \
 	utf7.$(O) htmll1o.$(O) uhtmll1.$(O) htmlso.$(O) uhtmls.$(O) \
 	ubeta.$(O) betao.$(O)

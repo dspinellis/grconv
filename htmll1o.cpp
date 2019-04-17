@@ -22,7 +22,7 @@ void
 htmll1o::fillbuff()
 {
 	unsigned int c;
-	char *out;
+	const char *out;
 
 	// See RFC2070
 	switch (c = input->getcharacter()) {
@@ -125,7 +125,7 @@ htmll1o::fillbuff()
 	default: nq(c); return;
 	}
 	nq('&');
-	for (char *s = out; *s; s++)
+	for (const char *s = out; *s; s++)
 		nq(*s);
 	nq(';');
 }

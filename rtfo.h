@@ -25,7 +25,7 @@ class rtfo: public filter, public queue {
 private:
 	int outcount;
 
-	inline void nqsnl(char *s)
+	inline void nqsnl(const char *s)
 	{
 		for (;*s; s++) {
 			nq(*s);
